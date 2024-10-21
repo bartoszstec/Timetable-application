@@ -1,22 +1,18 @@
 package com.paw3.timetable.lesson;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalTime;
 
-
-@Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @RequiredArgsConstructor
-public class Lesson {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
+public class LessonDTO {
     @NonNull
     private String name;
 
@@ -30,23 +26,13 @@ public class Lesson {
     private String room;
 
     @NonNull
-    @Column(name = "start_time")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime startTime;
 
     @NonNull
-    @Column(name = "end_time")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime endTime;
 
     @NonNull
-    private DayOfTheWeek dayOfTheWeek;
-}
-
-enum DayOfTheWeek {
-    Monday,
-    Tuesday,
-    Wednesday,
-    Thursday,
-    Friday,
-    Saturday,
-    Sunday
+    private String dayOfTheWeek;
 }
