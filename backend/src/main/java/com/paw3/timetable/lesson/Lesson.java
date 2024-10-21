@@ -1,7 +1,10 @@
-package com.paw3.timetable.school_class;
+package com.paw3.timetable.lesson;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalTime;
 
 
 @Entity
@@ -21,17 +24,19 @@ public class Lesson {
     private String teacher;
 
     @NonNull
-    private String gang;
+    private String studentGroup;
 
     @NonNull
     private String room;
 
     @NonNull
     @Column(name = "start_time")
-    private String startTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+    private LocalTime startTime;
 
     @NonNull
     @Column(name = "end_time")
-    private String endTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+    private LocalTime endTime;
 
 }

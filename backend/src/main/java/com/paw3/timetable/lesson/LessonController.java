@@ -1,4 +1,4 @@
-package com.paw3.timetable.school_class;
+package com.paw3.timetable.lesson;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
