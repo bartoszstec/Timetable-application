@@ -1,4 +1,4 @@
-package com.paw3.timetable.school_class;
+package com.paw3.timetable.lesson;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;

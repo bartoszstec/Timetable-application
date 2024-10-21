@@ -1,4 +1,4 @@
-package com.paw3.timetable.school_class;
+package com.paw3.timetable.lesson;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -9,20 +9,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LessonController {
 
-    private final LessonRepository repository;
+    private final LessonService lessonService;
 
     @GetMapping("/lessons")
     List<Lesson> all() {
-        return repository.findAll();
+        return lessonService.findAll();
     }
 
     @GetMapping("/lessons/{id}")
     Lesson one(@PathVariable Long id) {
-        return repository.findById(id).orElse(null);
+        return lessonService.findById(id);
     }
 
     @PostMapping("/lessons")
-    Lesson newLesson(@RequestBody Lesson lesson) {
-        return repository.save(lesson);
+    Lesson newLesson(@RequestBody LessonDTO lessonDTO) {
+        return lessonService.save(lessonDTO);
     }
 }
