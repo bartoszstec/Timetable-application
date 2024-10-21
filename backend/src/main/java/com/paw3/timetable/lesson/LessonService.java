@@ -1,5 +1,7 @@
 package com.paw3.timetable.lesson;
 
+import com.paw3.timetable.semester.Semester;
+import com.paw3.timetable.semester.SemesterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import java.util.Optional;
 public class LessonService {
 
     private final LessonRepository lessonRepository;
+    private final SemesterService semesterService;
 
     public List<Lesson> findAll() {
         return lessonRepository.findAll();
@@ -18,7 +21,7 @@ public class LessonService {
 
     public Lesson findById(Long id) {
         return lessonRepository.findById(id)
-                .orElseThrow(() -> new LessonNotFoundException("Lesson of id " + id + " not found"));
+                .orElseThrow(() -> new LessonNotFoundException("Lesson of id " + id + " not found."));
     }
 
     public Lesson save(LessonDTO lessonDTO) {
@@ -26,17 +29,18 @@ public class LessonService {
     }
 
     private Lesson convertToEntity(LessonDTO lessonDTO) {
-        Lesson lesson = new Lesson();
+        Semester semester = semesterService.findById(lessonDTO.getSemesterId());
 
-        lesson.setName(lessonDTO.getName());
-        lesson.setTeacher(lessonDTO.getTeacher());
-        lesson.setStudentGroup(lessonDTO.getStudentGroup());
-        lesson.setRoom(lessonDTO.getRoom());
-        lesson.setStartTime(lessonDTO.getStartTime());
-        lesson.setEndTime(lessonDTO.getEndTime());
-        lesson.setDayOfTheWeek(DayOfTheWeek.valueOf(lessonDTO.getDayOfTheWeek()));
-
-        return lesson;
+        return new Lesson(
+                lessonDTO.getName(),
+                lessonDTO.getTeacher(),
+                lessonDTO.getStudentGroup(),
+                lessonDTO.getRoom(),
+                lessonDTO.getStartTime(),
+                lessonDTO.getEndTime(),
+                DayOfTheWeek.valueOf(lessonDTO.getDayOfTheWeek()),
+                semester
+        );
     }
 }
 

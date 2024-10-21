@@ -1,6 +1,7 @@
 package com.paw3.timetable.lesson;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.paw3.timetable.semester.Semester;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -39,6 +40,11 @@ public class Lesson {
 
     @NonNull
     private DayOfTheWeek dayOfTheWeek;
+
+    @NonNull
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "semester_id")
+    private Semester semester;
 }
 
 enum DayOfTheWeek {
