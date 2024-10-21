@@ -18,7 +18,8 @@ public class LessonController {
 
     @GetMapping("/lessons/{id}")
     Lesson one(@PathVariable Long id) {
-        return repository.findById(id).orElse(null);
+        return repository.findById(id)
+                .orElseThrow(() -> new LessonNotFoundException("Lesson of id " + id + " not found"));
     }
 
     @PostMapping("/lessons")

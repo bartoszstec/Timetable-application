@@ -39,4 +39,16 @@ public class Lesson {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime endTime;
 
+    @NonNull
+    private DayOfTheWeek dayOfTheWeek;
+}
+
+enum DayOfTheWeek {
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY,
+    SUNDAY
 }
