@@ -1,6 +1,5 @@
 package com.paw3.timetable.lesson;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.paw3.timetable.semester.Semester;
 import jakarta.persistence.*;
 import lombok.*;
