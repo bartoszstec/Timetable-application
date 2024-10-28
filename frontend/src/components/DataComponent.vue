@@ -6,7 +6,8 @@
       <div v-else>
         <ul>
           <li v-for="lesson in lessons" :key="lesson.id">
-            {{ lesson.name }} - {{ lesson.description }}
+            {{ lesson.name }} - {{ lesson.room }} - {{ lesson.teacher }} - {{ lesson.id }}
+            <!-- wszystkie kolumny tabeli lesson: id, day_of_the_week, end_time, name, room, start_time, student_group, teacher, semestr_id -->
           </li>
         </ul>
       </div>
@@ -37,6 +38,7 @@
           this.error = 'Błąd podczas ładowania danych'; // Obsłuż błąd
         } finally {
           this.loading = false; // Zmień flagę ładowania po zakończeniu żądania
+          console.log(this.lessons);
         }
       }
     }

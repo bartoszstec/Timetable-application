@@ -5,7 +5,7 @@
 
 						<div id="banner">
 							<h2>Put something cool here!</h2>
-							<span>And put something almost as cool here, but a bit longer ...</span>
+							<img src="../assets/images/Randy.png" alt="something cool">
 						</div>
 
 					</div>

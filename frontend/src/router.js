@@ -2,14 +2,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import AnotherComponent from './components/AnotherComponent.vue';
 import ScheduleComponent from './components/ScheduleComponent.vue';
-import HelloWorld from './components/HelloWorld.vue';
 import DataComponent from './components/DataComponent.vue';
+import LoginComponent from './components/LoginComponent.vue';
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component:HelloWorld  // Komponent dla strony głównej
+    component:AnotherComponent  // Komponent dla strony głównej
   },
   {
     path: '/another',
@@ -25,6 +25,11 @@ const routes = [
     path: '/showdata',
     name: 'showdata',
     component: DataComponent  // Komponent testowy wyświetlający dane z backendu
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginComponent  // Komponent dla strony logowania
   }
   
 ];
