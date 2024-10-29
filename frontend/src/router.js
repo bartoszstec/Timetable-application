@@ -4,6 +4,7 @@ import AnotherComponent from './components/AnotherComponent.vue';
 import ScheduleComponent from './components/ScheduleComponent.vue';
 import DataComponent from './components/DataComponent.vue';
 import LoginComponent from './components/LoginComponent.vue';
+import AdderComponent from './components/AdderComponent.vue';
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginComponent  // Komponent dla strony logowania
+  },
+  {
+    path: '/addLesson',
+    name: 'addLesson',
+    component: AdderComponent  // Komponent dla strony dodawania 
   }
   
 ];
