@@ -33,12 +33,12 @@
 									<h2>Who are you guys?</h2>
 									<ul class="small-image-list">
 										<li>
-											<a href="#"><img src="images/pic2.jpg" alt="" class="left" /></a>
+											<a href="#"><img src="../assets/images/pic2.jpg" alt="" class="left" /></a>
 											<h4>Jane Anderson</h4>
 											<p>Varius nibh. Suspendisse vitae magna eget et amet mollis justo facilisis amet quis.</p>
 										</li>
 										<li>
-											<a href="#"><img src="images/pic1.jpg" alt="" class="left" /></a>
+											<a href="#"><img src="../assets/images/pic1.jpg" alt="" class="left" /></a>
 											<h4>James Doe</h4>
 											<p>Vitae magna eget odio amet mollis justo facilisis amet quis. Sed sagittis consequat.</p>
 										</li>
@@ -86,21 +86,21 @@
 									sit amet consequat sed dolore.</p>
 									<ul class="big-image-list">
 										<li>
-											<a href="#"><img src="images/pic3.jpg" alt="" class="left" /></a>
+											<a href="#"><img src="../assets/images/pic3.jpg" alt="" class="left" /></a>
 											<h3>Magna Gravida Dolore</h3>
 											<p>Varius nibh. Suspendisse vitae magna eget et amet mollis justo
 											facilisis amet quis consectetur in, sollicitudin vitae justo. Cras
 											Maecenas eu arcu purus, phasellus fermentum elit.</p>
 										</li>
 										<li>
-											<a href="#"><img src="images/pic4.jpg" alt="" class="left" /></a>
+											<a href="#"><img src="../assets/images/pic4.jpg" alt="" class="left" /></a>
 											<h3>Magna Gravida Dolore</h3>
 											<p>Varius nibh. Suspendisse vitae magna eget et amet mollis justo
 											facilisis amet quis consectetur in, sollicitudin vitae justo. Cras
 											Maecenas eu arcu purus, phasellus fermentum elit.</p>
 										</li>
 										<li>
-											<a href="#"><img src="images/pic5.jpg" alt="" class="left" /></a>
+											<a href="#"><img src="../assets/images/pic5.jpg" alt="" class="left" /></a>
 											<h3>Magna Gravida Dolore</h3>
 											<p>Varius nibh. Suspendisse vitae magna eget et amet mollis justo
 											facilisis amet quis consectetur in, sollicitudin vitae justo. Cras
@@ -115,7 +115,7 @@
 								<article class="blog-post">
 									<h2>Just another blog post</h2>
 									<a class="comments" href="#">33 comments</a>
-									<a href="#"><img src="images/pic6.jpg" alt="" class="top blog-post-image" /></a>
+									<a href="#"><img src="../assets/images/pic6.jpg" alt="" class="top blog-post-image" /></a>
 									<h3>Magna Gravida Dolore</h3>
 									<p>Aenean non massa sapien. In hac habitasse platea dictumst.
 									Maecenas sodales purus et nulla sodales aliquam. Aenean ac

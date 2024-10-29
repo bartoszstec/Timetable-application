@@ -10,7 +10,14 @@
       <div class="time-row" v-for="hour in hours" :key="hour">
         <div class="time-cell">{{ hour }}</div>
         <div class="day-cell" v-for="day in days" :key="day">
-          <div class="quarter-cell" v-for="quarter in 4" :key="quarter"></div>
+          <div class="quarter-cell" v-for="quarter in 4" :key="quarter">
+            <div 
+              v-for="lesson in lessons"
+              :key="lesson.id"
+            >
+              {{ lesson.name }} - {{ lesson.room }} - {{ lesson.teacher }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -19,6 +26,8 @@
 
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'ScheduleComponent',
     data() {
@@ -29,14 +38,26 @@ export default {
         "13:00", "14:00", "15:00", "16:00", 
         "17:00", "18:00", "19:00", "20:00"
       ],
+      lessons: [], // Tutaj będą przechowywane dane
+        loading: true, // Flaga ładowania
+        error: null // Flaga błędu
     };
   },
-  methods: {
-    getLesson(day, hour) {
-      return this.lessons.find(lesson => {
-        return lesson.day === day && lesson.hour === hour;
-      });
+  mounted() {
+      this.fetchLessons();
     },
+  methods: {
+    async fetchLessons() {
+        try {
+          const response = await axios.get('http://localhost:8080/lessons'); 
+          this.lessons = response.data; // Przypisz otrzymane dane do stanu komponentu
+        } catch (err) {
+          this.error = 'Błąd podczas ładowania danych'; // Obsłuż błąd
+        } finally {
+          this.loading = false; // Zmień flagę ładowania po zakończeniu żądania
+          console.log(this.lessons);
+        }
+      }
   },
 };
 </script>

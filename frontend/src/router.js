@@ -35,7 +35,7 @@ const routes = [
   {
     path: '/addLesson',
     name: 'addLesson',
-    component: AdderComponent  // Komponent dla strony dodawania 
+    component: AdderComponent  // Komponent dla strony dodawania lekcji
   }
   
 ];
