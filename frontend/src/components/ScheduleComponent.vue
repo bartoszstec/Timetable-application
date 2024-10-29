@@ -10,11 +10,13 @@
       <div class="time-row" v-for="hour in hours" :key="hour">
         <div class="time-cell">{{ hour }}</div>
         <div class="day-cell" v-for="day in days" :key="day">
+          <div class="quarter-cell" v-for="quarter in 4" :key="quarter"></div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 export default {
@@ -73,8 +75,16 @@ export default {
 }
 
 .day-cell {
-  padding: 10px;
+  padding: 0; /* Wyłącz padding */
   border: 1px solid #ddd;
+  display: flex;
+  flex-direction: column; 
+}
+
+.quarter-cell {
+  flex: 1; 
+  border-top: 1px solid #ddd; 
+  height: 25%;
 }
 
 .lesson {
