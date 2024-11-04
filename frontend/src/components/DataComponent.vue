@@ -31,8 +31,15 @@
     },
     methods: {
       async fetchLessons() {
+        const token = sessionStorage.getItem('token');
+
         try {
-          const response = await axios.get('http://localhost:8080/lessons'); 
+          const response = await axios.get('http://localhost:8080/api/lessons', {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+
+        }); 
           this.lessons = response.data; // Przypisz otrzymane dane do stanu komponentu
         } catch (err) {
           this.error = 'Błąd podczas ładowania danych'; // Obsłuż błąd

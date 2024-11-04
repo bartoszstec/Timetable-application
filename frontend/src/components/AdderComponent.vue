@@ -77,7 +77,7 @@ label {
 
 .submit-button {
 	padding: 10px 15px;
-	background-color: #2196F3;
+	background-color: #077e25;
 	color: white;
 	border: none;
 	border-radius: 4px;
@@ -89,6 +89,6 @@ label {
 }
 
 .submit-button:hover {
-	background-color: #1976D2; /* Ciemniejszy kolor przy najechaniu */
+	background-color: #034213; /* Ciemniejszy kolor przy najechaniu */
 }
 </style>
