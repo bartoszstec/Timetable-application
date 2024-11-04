@@ -4,6 +4,7 @@ import AnotherComponent from './components/AnotherComponent.vue';
 import ScheduleComponent from './components/ScheduleComponent.vue';
 import DataComponent from './components/DataComponent.vue';
 import LoginComponent from './components/LoginComponent.vue';
+import LogoutComponent from './components/LogoutComponent.vue';
 import AdderComponent from './components/AdderComponent.vue';
 
 const routes = [
@@ -31,6 +32,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginComponent  // Komponent dla strony logowania
+  },
+  {
+    path: '/logout',
+    name: 'logout',
+    component: LogoutComponent  // Komponent dla wylogowania
   },
   {
     path: '/addLesson',
