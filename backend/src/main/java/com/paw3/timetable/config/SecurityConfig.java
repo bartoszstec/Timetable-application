@@ -20,6 +20,11 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationManager authenticationManager;
 
+    private static final String[] AUTH_WHITELIST = {
+            "/auth/**",
+            "/swagger-ui/**"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -27,14 +32,13 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/auth/**")
+                        .requestMatchers(AUTH_WHITELIST)
                         .permitAll()
                         .requestMatchers("/api/**")
                         .authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .authenticationManager(authenticationManager)
-        ;
+                .authenticationManager(authenticationManager);
 
         return http.build();
     }
