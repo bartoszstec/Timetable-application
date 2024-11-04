@@ -1,6 +1,5 @@
-package com.paw3.timetable.config;
+package com.paw3.timetable.jwt;
 
-import com.paw3.timetable.jwt.JwtService;
 import org.springframework.stereotype.Component;
 
 import jakarta.servlet.FilterChain;
