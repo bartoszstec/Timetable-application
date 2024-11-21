@@ -69,7 +69,7 @@ export default {
     const token = sessionStorage.getItem('token');
     if (!token) {
       this.$router.push({ path: '/login' });
-      alertStore.addAlert('Nie jesteś zalogowany! Zaloguj się!', 'danger');
+      alertStore.addAlert('Zaloguj się, aby uzyskać dostęp do tej strony.', 'info');
       return false;
     }
     return token;

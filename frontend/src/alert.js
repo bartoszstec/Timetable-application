@@ -3,7 +3,7 @@ import { reactive } from 'vue';
 export const alertStore = reactive({ 
   alerts: [],
 
-  addAlert(message, type = 'info', duration = 5000) {
+  addAlert(message, type = 'info', duration = 2500) {
     if (this.alerts.some(alert => (alert.message === message && alert.type === type))) {
         return; // Nie dodawaj duplikatu
       }
@@ -24,4 +24,7 @@ export const alertStore = reactive({
       this.alerts.splice(index, 1); // Usuń tylko ten alert
     }
   },
+  clearAlerts() {
+    this.alerts = []
+  }
 });

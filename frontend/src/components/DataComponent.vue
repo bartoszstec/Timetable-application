@@ -16,6 +16,7 @@
   
   <script>
   import axios from 'axios';
+  import { alertStore } from '@/alert.js';
   
   export default {
     name: 'DataComponent',
@@ -32,6 +33,10 @@
     methods: {
       async fetchLessons() {
         const token = sessionStorage.getItem('token');
+        if (!token) {
+      this.$router.push({ path: '/login' });
+      alertStore.addAlert('Zaloguj się, aby uzyskać dostęp do tej strony.', 'info');
+    }
 
         try {
           const response = await axios.get('http://localhost:8080/api/lessons', {

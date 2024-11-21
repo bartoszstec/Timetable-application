@@ -1,6 +1,7 @@
 <template>
-	<form @submit.prevent="submitForm" class="login-form">
+	<form @submit.prevent="submitForm">
 		<div class="wyrownaj">
+			<h2>Formularz dodawania zajęć</h2>
 			<div class="form-group">
 				<label for="name">Nazwa zajęć</label>
 				<input id="name" v-model="name" name="name" type="text" class="form-input" required>
@@ -33,8 +34,8 @@
 				<label for="dayOfTheWeek">Semetr</label>
 				<input id="semester" v-model="semester" name="semester" type="text" class="form-input" required>
 			</div>
+			<button type="submit" class="submit-button">Zapisz</button>
 		</div>
-		<button type="submit" class="submit-button">Zapisz</button>
 	</form>
 </template>
 
@@ -83,56 +84,3 @@ export default {
     },
 };
 </script>
-
-<style>
-.wyrownaj {
-	max-width: 400px;
-	margin-left: auto;
-	margin-right: auto;
-	padding: 20px;
-	border: 1px solid #ddd;
-	border-radius: 8px;
-	background-color: #f9f9f9;
-}
-
-.form-group {
-	margin-bottom: 15px;
-}
-
-label {
-	display: block;
-	font-weight: bold;
-	margin-bottom: 5px;
-}
-
-.form-input {
-	width: 100%;
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	font-size: 16px;
-	transition: border-color 0.3s;
-}
-
-.form-input:focus {
-	border-color: #2196F3; /* Kolor obramowania przy focussie */
-	outline: none; /* Usunięcie standardowej obramowania */
-}
-
-.submit-button {
-	padding: 10px 15px;
-	background-color: #077e25;
-	color: white;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-	font-size: 16px;
-	transition: background-color 0.3s;
-	position: absolute;
-	right: 30%; /* Ustawienie przycisku 30% od prawej krawędzi */
-}
-
-.submit-button:hover {
-	background-color: #034213; /* Ciemniejszy kolor przy najechaniu */
-}
-</style>

@@ -1,17 +1,22 @@
 <template>
+  <div class="wyrownaj">
     <h2>Formularz Rejestracji</h2>
     <form @submit.prevent="performRegistration">
+      <div class="form-group">
       <label for="email">Email</label>
-      <input id="email" v-model="email" type="email" required>
-  
+      <input id="email" v-model="email" type="email" class="form-input" required>
+      </div>
+      <div class="form-group">
       <label for="password">Hasło</label>
-      <input id="password" v-model="password" type="password" required>
-  
+      <input id="password" v-model="password" type="password" class="form-input" required>
+      </div>
+      <div class="form-group">
       <label for="confirmPassword">Potwierdź hasło</label>
-      <input id="confirmPassword" v-model="confirmPassword" type="password" required>
-  
-      <button type="submit">Zarejestruj się</button>
+      <input id="confirmPassword" v-model="confirmPassword" type="password" class="form-input" required>
+      </div>
+      <button type="submit" class="submit-button">Zarejestruj się</button>
     </form>
+  </div>
   </template>
   
   <script>
