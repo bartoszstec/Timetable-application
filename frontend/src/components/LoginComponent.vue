@@ -41,7 +41,7 @@ methods: {
 
             console.log('Zalogowano pomyślnie');
             console.log(token);
-            this.$router.push('/');
+            this.$router.push('/schedule');
     } catch (error){
         console.log('Błąd logowania');
     }
