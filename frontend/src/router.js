@@ -6,6 +6,7 @@ import DataComponent from './components/DataComponent.vue';
 import LoginComponent from './components/LoginComponent.vue';
 import LogoutComponent from './components/LogoutComponent.vue';
 import AdderComponent from './components/AdderComponent.vue';
+import RegisterComponent from './components/RegisterComponent.vue';
 
 const routes = [
   {
@@ -32,6 +33,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginComponent  // Komponent dla strony logowania
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: RegisterComponent  // Komponent dla strony rejestroania
   },
   {
     path: '/logout',
