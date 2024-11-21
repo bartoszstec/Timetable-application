@@ -13,7 +13,8 @@
 										<router-link to="/schedule">Harmonogram</router-link>
 										<router-link to="/showdata">Show data</router-link>
 										<router-link to="/addLesson">Add Lesson</router-link>
-										<router-link to="/login">Login</router-link>
+										<router-link to="/login">Zaloguj się</router-link>
+										<router-link to="/logout">Wyloguj się</router-link>
 									</nav>
 								</header>
 

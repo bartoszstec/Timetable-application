@@ -1967,3 +1967,28 @@ input, select, textarea {
 				}
 
 	}
+
+	.alert {
+  text-align: center;
+  padding: 15px;
+  margin: 20px;
+  border-radius: 5px;
+  font-size: 20px;
+  color: white; /* Kolor tekstu */
+}
+
+.alert-danger {
+  background-color: #f44336; /* Czerwony */
+}
+
+.alert-info {
+  background-color: #2196f3; /* Niebieski */
+}
+
+.alert-success {
+  background-color: #4caf50; /* Zielony */
+}
+
+.alert-warning {
+  background-color: #ff9800; /* Pomarańczowy */
+}

@@ -43,6 +43,7 @@
 
 <script>
 import axios from 'axios';
+import { alertStore } from '@/alert.js';
 
 export default {
   name: 'ScheduleComponent',
@@ -64,8 +65,19 @@ export default {
     this.fetchSemesters();
   },
   methods: {
-    async fetchSemesters() {
+    checkAuthorization() {
     const token = sessionStorage.getItem('token');
+    if (!token) {
+      this.$router.push({ path: '/login' });
+      alertStore.addAlert('Nie jesteś zalogowany! Zaloguj się!', 'danger');
+      return false;
+    }
+    return token;
+  },
+    async fetchSemesters() {
+      const token = this.checkAuthorization();
+      if (!token) return; // Przerwij metodę, jeśli nie ma tokena
+
     try {
       const response = await axios.get('http://localhost:8080/api/semesters', {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -77,10 +89,12 @@ export default {
       }
     } catch (err) {
       this.error = 'Błąd podczas ładowania semestrów';
+      alertStore.addAlert('Wystąpił błąd podczas ładowania semestrów', 'danger');
     }
   },
     async fetchLessons() {
-      const token = sessionStorage.getItem('token');
+      const token = this.checkAuthorization();
+      if (!token) return; // Przerwij metodę, jeśli nie ma tokena
 
       try {
         const response = await axios.get('http://localhost:8080/api/lessons',{
