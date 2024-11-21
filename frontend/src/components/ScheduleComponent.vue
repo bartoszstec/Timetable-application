@@ -25,6 +25,7 @@
 
 <script>
 import axios from 'axios';
+import { alertStore } from '@/alert.js';
 
 export default {
   name: 'ScheduleComponent',
@@ -47,6 +48,16 @@ export default {
   methods: {
     async fetchLessons() {
       const token = sessionStorage.getItem('token');
+
+      if (!token) {
+        this.$router.push({
+        path: '/login'
+        });
+        alertStore.addAlert('Nie jesteś zalogowany zaloguj się!', 'danger');
+        alertStore.addAlert('siema', 'info', 7000);
+        alertStore.addAlert('siema', 'success', 8000);
+        alertStore.addAlert('siema', 'warning', 8000);
+    }
 
       try {
         const response = await axios.get('http://localhost:8080/api/lessons',{
