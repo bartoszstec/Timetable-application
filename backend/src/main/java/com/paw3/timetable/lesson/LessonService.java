@@ -1,19 +1,19 @@
 package com.paw3.timetable.lesson;
 
 import com.paw3.timetable.semester.Semester;
-import com.paw3.timetable.semester.SemesterService;
+import com.paw3.timetable.semester.SemesterNotFoundException;
+import com.paw3.timetable.semester.SemesterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class LessonService {
 
     private final LessonRepository lessonRepository;
-    private final SemesterService semesterService;
+    private final SemesterRepository semesterRepository;
 
     public List<Lesson> findAll() {
         return lessonRepository.findAll();
@@ -28,8 +28,13 @@ public class LessonService {
         return lessonRepository.save(convertToEntity(lessonDTO));
     }
 
+    public void deleteById(Long id) {
+        lessonRepository.deleteById(id);
+    }
+
     private Lesson convertToEntity(LessonDTO lessonDTO) {
-        Semester semester = semesterService.findById(lessonDTO.getSemesterId());
+        Semester semester = semesterRepository.findById(lessonDTO.getSemesterId())
+                .orElseThrow(() -> new SemesterNotFoundException("Semester not found with id: " + lessonDTO.getSemesterId()));
 
         return new Lesson(
                 lessonDTO.getName(),
@@ -38,15 +43,12 @@ public class LessonService {
                 lessonDTO.getRoom(),
                 lessonDTO.getStartTime(),
                 lessonDTO.getEndTime(),
-                DayOfTheWeek.valueOf(lessonDTO.getDayOfTheWeek()),
-                Occurrence.valueOf(lessonDTO.getOccurrence()),
+                Lesson.DayOfTheWeek.valueOf(lessonDTO.getDayOfTheWeek().toUpperCase()),
+                Lesson.Occurrence.valueOf(lessonDTO.getOccurrence().toUpperCase()),
                 semester
         );
     }
 
-    public void deleteById(Long id) {
-        lessonRepository.deleteById(id);
-    }
 }
 
 

@@ -1,5 +1,7 @@
 package com.paw3.timetable.semester;
 
+import com.paw3.timetable.lesson.Lesson;
+import com.paw3.timetable.lesson.LessonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import java.util.List;
 public class SemesterService {
     
     private final SemesterRepository semesterRepository;
+    private final LessonRepository lessonRepository;
 
 
     public List<Semester> findAll() {
@@ -19,6 +22,20 @@ public class SemesterService {
     public Semester findById(Long id) {
         return semesterRepository.findById(id)
                 .orElseThrow(() -> new SemesterNotFoundException("Semester of id " + id + " not found."));
+    }
+
+    public List<Lesson> findLessonsBySemesterId(Long semesterId) {
+        Semester semester = semesterRepository.findById(semesterId)
+                .orElseThrow(() -> new SemesterNotFoundException("Semester not found with id: " + semesterId));
+
+        return lessonRepository.findBySemester(semester);
+    }
+
+    public List<Lesson> findLessonsWithOccurrenceBySemesterId(Long semesterId, Lesson.Occurrence occurrence) {
+        Semester semester = semesterRepository.findById(semesterId)
+                .orElseThrow(() -> new SemesterNotFoundException("Semester not found with id: " + semesterId));
+
+        return lessonRepository.findBySemesterAndOccurrence(semester, occurrence);
     }
 
     public Semester save(SemesterDTO semesterDTO) {
@@ -37,4 +54,5 @@ public class SemesterService {
     public void deleteById(Long id) {
         semesterRepository.deleteById(id);
     }
+
 }
