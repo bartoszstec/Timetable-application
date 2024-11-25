@@ -39,8 +39,13 @@ public class LessonService {
                 lessonDTO.getStartTime(),
                 lessonDTO.getEndTime(),
                 DayOfTheWeek.valueOf(lessonDTO.getDayOfTheWeek()),
+                Occurrence.valueOf(lessonDTO.getOccurrence()),
                 semester
         );
+    }
+
+    public void deleteById(Long id) {
+        lessonRepository.deleteById(id);
     }
 }
 

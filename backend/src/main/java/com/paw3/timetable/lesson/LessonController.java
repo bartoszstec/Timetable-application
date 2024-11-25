@@ -26,4 +26,10 @@ public class LessonController {
     Lesson newLesson(@RequestBody LessonDTO lessonDTO) {
         return lessonService.save(lessonDTO);
     }
+
+    @DeleteMapping("/lessons/{id}")
+    void deleteLesson(@PathVariable Long id) {
+        lessonService.deleteById(id);
+    }
+
 }
