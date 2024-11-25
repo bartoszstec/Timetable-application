@@ -21,19 +21,19 @@ public class SemesterService {
 
     public Semester findById(Long id) {
         return semesterRepository.findById(id)
-                .orElseThrow(() -> new SemesterNotFoundException("Semester of id " + id + " not found."));
+                .orElseThrow(() -> new SemesterNotFoundException("Semester of id = " + id + " not found"));
     }
 
     public List<Lesson> findLessonsBySemesterId(Long semesterId) {
         Semester semester = semesterRepository.findById(semesterId)
-                .orElseThrow(() -> new SemesterNotFoundException("Semester not found with id: " + semesterId));
+                .orElseThrow(() -> new SemesterNotFoundException("Semester of id = " + semesterId + " not found"));
 
         return lessonRepository.findBySemester(semester);
     }
 
     public List<Lesson> findLessonsWithOccurrenceBySemesterId(Long semesterId, Lesson.Occurrence occurrence) {
         Semester semester = semesterRepository.findById(semesterId)
-                .orElseThrow(() -> new SemesterNotFoundException("Semester not found with id: " + semesterId));
+                .orElseThrow(() -> new SemesterNotFoundException("Semester of id = " + semesterId + " not found"));
 
         return lessonRepository.findBySemesterAndOccurrence(semester, occurrence);
     }

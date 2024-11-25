@@ -34,7 +34,7 @@ public class LessonService {
 
     private Lesson convertToEntity(LessonDTO lessonDTO) {
         Semester semester = semesterRepository.findById(lessonDTO.getSemesterId())
-                .orElseThrow(() -> new SemesterNotFoundException("Semester not found with id: " + lessonDTO.getSemesterId()));
+                .orElseThrow(() -> new SemesterNotFoundException("Semester of id = " + lessonDTO.getSemesterId() + " not found"));
 
         return new Lesson(
                 lessonDTO.getName(),
