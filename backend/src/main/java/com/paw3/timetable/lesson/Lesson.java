@@ -48,7 +48,7 @@ public class Lesson {
     @JoinColumn(name = "semester_id")
     private Semester semester;
 
-    enum DayOfTheWeek {
+    public enum DayOfTheWeek {
         MONDAY,
         TUESDAY,
         WEDNESDAY,

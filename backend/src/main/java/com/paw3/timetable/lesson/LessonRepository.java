@@ -11,4 +11,5 @@ import java.util.List;
 public interface LessonRepository extends JpaRepository<Lesson, Long> {
     List<Lesson> findBySemester(Semester semester);
     List<Lesson> findBySemesterAndOccurrence(Semester semester, Lesson.Occurrence occurrence);
+    List<Lesson> findBySemesterAndDayOfTheWeek(Semester semester, Lesson.DayOfTheWeek dayOfTheWeek);
 }
