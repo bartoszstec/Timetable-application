@@ -33,4 +33,8 @@ public class SemesterService {
 
         return semester;
     }
+
+    public void deleteById(Long id) {
+        semesterRepository.deleteById(id);
+    }
 }

@@ -26,4 +26,9 @@ public class SemesterController {
     Semester newSemester(@RequestBody SemesterDTO semesterDTO) {
         return semesterService.save(semesterDTO);
     }
+
+    @DeleteMapping("/semesters/{id}")
+    void deleteSemester(@PathVariable Long id) {
+        semesterService.deleteById(id);
+    }
 }
