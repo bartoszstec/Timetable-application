@@ -37,6 +37,9 @@ public class LessonDTO {
     private String dayOfTheWeek;
 
     @NonNull
+    private String occurrence;
+
+    @NonNull
     @Column(name = "semester_id")
     private Long semesterId;
 }
