@@ -41,17 +41,28 @@ public class Lesson {
     private DayOfTheWeek dayOfTheWeek;
 
     @NonNull
+    private Occurrence occurrence;
+
+    @NonNull
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "semester_id")
     private Semester semester;
+
+    enum DayOfTheWeek {
+        MONDAY,
+        TUESDAY,
+        WEDNESDAY,
+        THURSDAY,
+        FRIDAY,
+        SATURDAY,
+        SUNDAY
+    }
+
+    public enum Occurrence {
+        ALL,
+        ODD,
+        EVEN
+    }
 }
 
-enum DayOfTheWeek {
-    Monday,
-    Tuesday,
-    Wednesday,
-    Thursday,
-    Friday,
-    Saturday,
-    Sunday
-}
+

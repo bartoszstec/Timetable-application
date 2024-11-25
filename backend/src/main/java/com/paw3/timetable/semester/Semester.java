@@ -19,6 +19,9 @@ public class Semester {
     private Long id;
 
     @NonNull
+    private String name;
+
+    @NonNull
     @Column(name = "start_date")
     private LocalDate startDate;
 
