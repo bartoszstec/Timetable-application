@@ -12,7 +12,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class Semester {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

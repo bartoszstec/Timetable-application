@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class StudentGroupDTO {
-
     @NonNull
     private String name;
 }

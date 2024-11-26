@@ -1,6 +1,7 @@
 package com.paw3.timetable.domain.student_group;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.paw3.timetable.domain.lesson.Lesson;
 import com.paw3.timetable.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,4 +26,8 @@ public class StudentGroup {
     @OneToMany(mappedBy = "studentGroup", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<User> students;
+
+    @OneToMany(mappedBy = "studentGroup", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Lesson> lessons;
 }

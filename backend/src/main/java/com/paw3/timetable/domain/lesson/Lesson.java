@@ -1,6 +1,7 @@
 package com.paw3.timetable.domain.lesson;
 
 import com.paw3.timetable.domain.semester.Semester;
+import com.paw3.timetable.domain.student_group.StudentGroup;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +12,6 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,9 +22,6 @@ public class Lesson {
 
     @NonNull
     private String teacher;
-
-    @NonNull
-    private String studentGroup;
 
     @NonNull
     private String room;
@@ -42,6 +39,11 @@ public class Lesson {
 
     @NonNull
     private Occurrence occurrence;
+
+    @NonNull
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "student_group_id")
+    private StudentGroup studentGroup;
 
     @NonNull
     @ManyToOne(cascade = CascadeType.ALL)

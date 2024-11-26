@@ -7,9 +7,8 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class SemesterDTO {
-
     @NonNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate startDate;

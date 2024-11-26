@@ -1,17 +1,13 @@
 package com.paw3.timetable.domain.lesson;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Column;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalTime;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class LessonDTO {
     @NonNull
     private String name;
@@ -20,7 +16,7 @@ public class LessonDTO {
     private String teacher;
 
     @NonNull
-    private String studentGroup;
+    private Long studentGroupId;
 
     @NonNull
     private String room;
@@ -40,6 +36,5 @@ public class LessonDTO {
     private String occurrence;
 
     @NonNull
-    @Column(name = "semester_id")
     private Long semesterId;
 }
