@@ -17,39 +17,35 @@ public class Lesson {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NonNull
+    @Column(nullable = false)
     private String name;
 
-    @NonNull
+    @Column(nullable = false)
     private String teacher;
 
-    @NonNull
+    @Column(nullable = false)
     private String room;
 
-    @NonNull
-    @Column(name = "start_time")
+    @Column(name = "start_time", nullable = false)
     private LocalTime startTime;
 
-    @NonNull
-    @Column(name = "end_time")
+    @Column(name = "end_time", nullable = false)
     private LocalTime endTime;
 
-    @NonNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private DayOfTheWeek dayOfTheWeek;
 
-    @NonNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Occurrence occurrence;
 
-    @NonNull
+    @JoinColumn(name = "student_group_id", nullable = false)
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "student_group_id")
     private StudentGroup studentGroup;
 
-    @NonNull
+    @JoinColumn(name = "semester_id", nullable = false)
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "semester_id")
     private Semester semester;
 
     public enum DayOfTheWeek {

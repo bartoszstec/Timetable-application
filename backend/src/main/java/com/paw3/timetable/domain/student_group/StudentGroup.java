@@ -20,7 +20,7 @@ public class StudentGroup {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NonNull
+    @Column(nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "studentGroup", fetch = FetchType.LAZY)

@@ -1,5 +1,6 @@
 package com.paw3.timetable.domain.auth.user;
 
+import com.paw3.timetable.domain.auth.role.Role;
 import com.paw3.timetable.domain.student_group.StudentGroup;
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,28 +16,29 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@RequiredArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(unique = true)
-    @NonNull
+    @Column(unique = true, nullable = false)
     private String email;
 
-    @NonNull
+    @Column(nullable = false)
     private String password;
 
+    @Column(updatable = false, nullable = false)
     @CreationTimestamp
-    @Column(updatable = false)
-    @NonNull
     private Date createdAt;
 
+    @Column(nullable = false)
     @UpdateTimestamp
-    @NonNull
     private Date updatedAt;
+
+    @ManyToOne()
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
 
     @ManyToOne()
     @JoinColumn(name = "student_group_id")
