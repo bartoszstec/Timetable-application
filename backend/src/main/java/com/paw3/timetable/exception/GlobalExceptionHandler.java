@@ -27,7 +27,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGeneralException(Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + e.getMessage());
+    public ResponseEntity<ErrorDetails> handleGeneralException(Exception e, WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), "An unexpected error occurred: " + e.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

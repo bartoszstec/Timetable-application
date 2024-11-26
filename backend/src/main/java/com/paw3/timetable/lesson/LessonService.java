@@ -6,6 +6,8 @@ import com.paw3.timetable.semester.Semester;
 import com.paw3.timetable.semester.SemesterNotFoundException;
 import com.paw3.timetable.semester.SemesterRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
@@ -24,12 +26,12 @@ public class LessonService {
 
     public Lesson findById(Long id) {
         return lessonRepository.findById(id)
-                .orElseThrow(() -> new LessonNotFoundException("Lesson of id " + id + " not found."));
+                .orElseThrow(() -> new LessonNotFoundException("Lesson of id " + id + " not found"));
     }
 
     public Lesson save(LessonDTO lessonDTO) {
         Semester semester = semesterRepository.findById(lessonDTO.getSemesterId())
-                .orElseThrow(() -> new SemesterNotFoundException("Semester of id = " + lessonDTO.getSemesterId() + " not found"));
+                .orElseThrow(() -> new SemesterNotFoundException("Semester of id " + lessonDTO.getSemesterId() + " not found"));
 
         List<Lesson> lessons = lessonRepository.findBySemesterAndDayOfTheWeek(semester, Lesson.DayOfTheWeek.valueOf(lessonDTO.getDayOfTheWeek().toUpperCase()));
 
@@ -39,8 +41,6 @@ public class LessonService {
 
         for (Lesson lesson: lessons) {
             if (timeRangesOverlap(startTime, endTime, lesson.getStartTime(), lesson.getEndTime())) {
-                System.out.println("overlap, occurrence = " + occurrence);
-                System.out.println("lesson occurrence = " + lesson.getOccurrence());
                 boolean isTimeConflict = "all".equals(occurrence) ||
                         ("odd".equals(occurrence) && "odd".equalsIgnoreCase(lesson.getOccurrence().toString())) ||
                         ("even".equals(occurrence) && "even".equalsIgnoreCase(lesson.getOccurrence().toString()));
@@ -52,21 +52,21 @@ public class LessonService {
             }
         }
 
-        return lessonRepository.save(convertToEntity(lessonDTO));
+        return lessonRepository.save(convertToEntity(lessonDTO, semester));
     }
 
     private boolean timeRangesOverlap(LocalTime start1, LocalTime end1, LocalTime start2, LocalTime end2) {
         return start1.isBefore(end2) && start2.isBefore(end1);
     }
 
-    public void deleteById(Long id) {
-        lessonRepository.deleteById(id);
+    public ResponseEntity<String> deleteById(Long id) {
+        if (lessonRepository.deleteAndFetch(id) == null) {
+            throw new LessonNotFoundException("Lesson of id " + id + " not found");
+        }
+        return new ResponseEntity<>("Lesson of id " + id + " has been deleted", HttpStatus.OK);
     }
 
-    private Lesson convertToEntity(LessonDTO lessonDTO) {
-        Semester semester = semesterRepository.findById(lessonDTO.getSemesterId())
-                .orElseThrow(() -> new SemesterNotFoundException("Semester of id = " + lessonDTO.getSemesterId() + " not found"));
-
+    private Lesson convertToEntity(LessonDTO lessonDTO, Semester semester) {
         return new Lesson(
                 lessonDTO.getName(),
                 lessonDTO.getTeacher(),

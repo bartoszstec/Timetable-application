@@ -2,6 +2,7 @@ package com.paw3.timetable.semester;
 
 import com.paw3.timetable.lesson.Lesson;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class SemesterController {
     }
 
     @DeleteMapping("/semesters/{id}")
-    void deleteSemester(@PathVariable Long id) {
-        semesterService.deleteById(id);
+    ResponseEntity<String> deleteSemester(@PathVariable Long id) {
+        return semesterService.deleteById(id);
     }
 }

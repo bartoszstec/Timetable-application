@@ -1,6 +1,7 @@
 package com.paw3.timetable.lesson;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,8 +29,8 @@ public class LessonController {
     }
 
     @DeleteMapping("/lessons/{id}")
-    void deleteLesson(@PathVariable Long id) {
-        lessonService.deleteById(id);
+    ResponseEntity<String> deleteLesson(@PathVariable Long id) {
+        return lessonService.deleteById(id);
     }
 
 }
