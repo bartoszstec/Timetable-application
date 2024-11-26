@@ -2,7 +2,7 @@ package com.paw3.timetable.domain.student_group;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.paw3.timetable.domain.lesson.Lesson;
-import com.paw3.timetable.domain.user.User;
+import com.paw3.timetable.domain.auth.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

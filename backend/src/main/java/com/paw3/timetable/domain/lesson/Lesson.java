@@ -35,9 +35,11 @@ public class Lesson {
     private LocalTime endTime;
 
     @NonNull
+    @Enumerated(EnumType.STRING)
     private DayOfTheWeek dayOfTheWeek;
 
     @NonNull
+    @Enumerated(EnumType.STRING)
     private Occurrence occurrence;
 
     @NonNull

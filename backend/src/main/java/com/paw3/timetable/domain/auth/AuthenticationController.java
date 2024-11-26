@@ -1,8 +1,8 @@
-package com.paw3.timetable.auth;
+package com.paw3.timetable.domain.auth;
 
 import com.paw3.timetable.jwt.JwtService;
-import com.paw3.timetable.domain.user.User;
-import com.paw3.timetable.domain.user.UserDTO;
+import com.paw3.timetable.domain.auth.user.User;
+import com.paw3.timetable.domain.auth.user.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

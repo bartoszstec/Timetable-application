@@ -1,4 +1,4 @@
-package com.paw3.timetable.auth;
+package com.paw3.timetable.domain.auth;
 
 import lombok.Getter;
 import lombok.NonNull;
