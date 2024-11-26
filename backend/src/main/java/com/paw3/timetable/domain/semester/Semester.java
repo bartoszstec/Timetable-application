@@ -1,7 +1,7 @@
-package com.paw3.timetable.semester;
+package com.paw3.timetable.domain.semester;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.paw3.timetable.lesson.Lesson;
+import com.paw3.timetable.domain.lesson.Lesson;
 import jakarta.persistence.*;
 import lombok.*;
 

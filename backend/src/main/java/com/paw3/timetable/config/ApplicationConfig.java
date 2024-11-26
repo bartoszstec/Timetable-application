@@ -1,6 +1,6 @@
 package com.paw3.timetable.config;
 
-import com.paw3.timetable.user.UserRepository;
+import com.paw3.timetable.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

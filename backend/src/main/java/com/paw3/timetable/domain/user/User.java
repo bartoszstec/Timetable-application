@@ -1,5 +1,6 @@
-package com.paw3.timetable.user;
+package com.paw3.timetable.domain.user;
 
+import com.paw3.timetable.domain.student_group.StudentGroup;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -36,6 +36,10 @@ public class User implements UserDetails {
     @UpdateTimestamp
     @NonNull
     private Date updatedAt;
+
+    @ManyToOne()
+    @JoinColumn(name = "student_group_id")
+    private StudentGroup studentGroup;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

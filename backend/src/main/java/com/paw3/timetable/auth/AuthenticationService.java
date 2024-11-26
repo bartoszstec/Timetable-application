@@ -1,8 +1,8 @@
 package com.paw3.timetable.auth;
 
-import com.paw3.timetable.user.User;
-import com.paw3.timetable.user.UserDTO;
-import com.paw3.timetable.user.UserRepository;
+import com.paw3.timetable.domain.user.User;
+import com.paw3.timetable.domain.user.UserDTO;
+import com.paw3.timetable.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

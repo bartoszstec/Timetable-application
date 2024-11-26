@@ -1,4 +1,4 @@
-package com.paw3.timetable.semester;
+package com.paw3.timetable.domain.semester;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

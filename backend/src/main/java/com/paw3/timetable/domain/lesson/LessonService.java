@@ -1,10 +1,8 @@
-package com.paw3.timetable.lesson;
+package com.paw3.timetable.domain.lesson;
 
-import com.paw3.timetable.lesson.exception.LessonNotFoundException;
-import com.paw3.timetable.lesson.exception.LessonTimeConflictException;
-import com.paw3.timetable.semester.Semester;
-import com.paw3.timetable.semester.SemesterNotFoundException;
-import com.paw3.timetable.semester.SemesterRepository;
+import com.paw3.timetable.domain.semester.Semester;
+import com.paw3.timetable.domain.semester.SemesterNotFoundException;
+import com.paw3.timetable.domain.semester.SemesterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

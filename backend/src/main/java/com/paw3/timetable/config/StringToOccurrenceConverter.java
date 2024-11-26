@@ -1,7 +1,7 @@
 package com.paw3.timetable.config;
 
 
-import com.paw3.timetable.lesson.Lesson;
+import com.paw3.timetable.domain.lesson.Lesson;
 import org.springframework.core.convert.converter.Converter;
 
 public class StringToOccurrenceConverter implements Converter<String, Lesson.Occurrence> {

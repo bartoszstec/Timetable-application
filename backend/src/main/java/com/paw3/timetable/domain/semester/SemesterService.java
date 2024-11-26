@@ -1,7 +1,7 @@
-package com.paw3.timetable.semester;
+package com.paw3.timetable.domain.semester;
 
-import com.paw3.timetable.lesson.Lesson;
-import com.paw3.timetable.lesson.LessonRepository;
+import com.paw3.timetable.domain.lesson.Lesson;
+import com.paw3.timetable.domain.lesson.LessonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

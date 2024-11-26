@@ -1,4 +1,4 @@
-package com.paw3.timetable.lesson.exception;
+package com.paw3.timetable.domain.lesson;
 
 public class LessonNotFoundException extends RuntimeException {
     public LessonNotFoundException(String message) {

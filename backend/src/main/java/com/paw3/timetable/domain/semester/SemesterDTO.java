@@ -1,4 +1,4 @@
-package com.paw3.timetable.semester;
+package com.paw3.timetable.domain.semester;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;

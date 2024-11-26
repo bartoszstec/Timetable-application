@@ -1,4 +1,4 @@
-package com.paw3.timetable.lesson;
+package com.paw3.timetable.domain.lesson;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;

@@ -1,7 +1,7 @@
-package com.paw3.timetable.lesson;
+package com.paw3.timetable.domain.lesson;
 
 
-import com.paw3.timetable.semester.Semester;
+import com.paw3.timetable.domain.semester.Semester;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

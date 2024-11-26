@@ -1,8 +1,8 @@
 package com.paw3.timetable.exception;
 
-import com.paw3.timetable.lesson.exception.LessonNotFoundException;
-import com.paw3.timetable.lesson.exception.LessonTimeConflictException;
-import com.paw3.timetable.semester.SemesterNotFoundException;
+import com.paw3.timetable.domain.lesson.LessonNotFoundException;
+import com.paw3.timetable.domain.lesson.LessonTimeConflictException;
+import com.paw3.timetable.domain.semester.SemesterNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

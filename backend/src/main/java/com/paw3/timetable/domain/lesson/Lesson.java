@@ -1,6 +1,6 @@
-package com.paw3.timetable.lesson;
+package com.paw3.timetable.domain.lesson;
 
-import com.paw3.timetable.semester.Semester;
+import com.paw3.timetable.domain.semester.Semester;
 import jakarta.persistence.*;
 import lombok.*;
 

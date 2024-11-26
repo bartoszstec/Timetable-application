@@ -1,4 +1,4 @@
-package com.paw3.timetable.lesson;
+package com.paw3.timetable.domain.lesson;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
