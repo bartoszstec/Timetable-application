@@ -30,6 +30,7 @@ public class User implements UserDetails {
     private String password;
 
     @CreationTimestamp
+    @Column(updatable = false)
     @NonNull
     private Date createdAt;
 
