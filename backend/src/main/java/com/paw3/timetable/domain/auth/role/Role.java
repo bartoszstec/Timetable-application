@@ -1,5 +1,7 @@
 package com.paw3.timetable.domain.auth.role;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.paw3.timetable.domain.auth.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,19 +21,23 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @NonNull
     private Long id;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @NonNull
     private RoleEnum name;
 
+    @Column(updatable = false, nullable = false)
     @CreationTimestamp
-    @Column(updatable = false)
     private Date createdAt;
 
+    @Column(nullable = false)
     @UpdateTimestamp
     private Date updatedAt;
+
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<User> users;
 
     public enum RoleEnum {
         STUDENT,
