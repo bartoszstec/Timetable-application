@@ -12,5 +12,8 @@ public class UserDTO {
     @NonNull
     private String password;
 
-    Long studentGroupId;
+    @NonNull
+    private String role;
+
+    private Long studentGroupId;
 }

@@ -1,5 +1,6 @@
 package com.paw3.timetable.domain.auth.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.paw3.timetable.domain.auth.role.Role;
 import com.paw3.timetable.domain.student_group.StudentGroup;
 import jakarta.persistence.*;
@@ -30,10 +31,12 @@ public class User implements UserDetails {
 
     @Column(updatable = false, nullable = false)
     @CreationTimestamp
+    @JsonIgnore
     private Date createdAt;
 
     @Column(nullable = false)
     @UpdateTimestamp
+    @JsonIgnore
     private Date updatedAt;
 
     @ManyToOne()

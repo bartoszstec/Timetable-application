@@ -5,7 +5,6 @@ import com.paw3.timetable.domain.auth.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -29,10 +28,12 @@ public class Role {
 
     @Column(updatable = false, nullable = false)
     @CreationTimestamp
+    @JsonIgnore
     private Date createdAt;
 
     @Column(nullable = false)
     @UpdateTimestamp
+    @JsonIgnore
     private Date updatedAt;
 
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
