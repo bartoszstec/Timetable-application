@@ -56,6 +56,10 @@ public class User implements UserDetails {
         return List.of(authority);
     }
 
+    public String getRole() {
+        return role.getName().toString();
+    }
+
     @JsonIgnore
     @Override
     public String getUsername() {

@@ -27,10 +27,12 @@ public class AuthenticationController {
         User authenticatedUser = authenticationService.authenticate(loginDTO);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
+        String role = authenticatedUser.getRole().toString();
 
         return new LoginResponse(
                 jwtToken,
-                jwtService.getExpirationTime()
+                jwtService.getExpirationTime(),
+                role
         );
     }
 
