@@ -4,8 +4,8 @@ import lombok.*;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
-public class UserDTO {
+@NoArgsConstructor
+public class SignupDTO {
     @NonNull
     private String email;
 

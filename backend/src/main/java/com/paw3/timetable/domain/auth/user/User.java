@@ -28,6 +28,7 @@ public class User implements UserDetails {
     private String email;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(updatable = false, nullable = false)
@@ -55,6 +56,7 @@ public class User implements UserDetails {
         return List.of(authority);
     }
 
+    @JsonIgnore
     @Override
     public String getUsername() {
         return email;
