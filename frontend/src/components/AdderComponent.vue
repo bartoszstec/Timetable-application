@@ -63,8 +63,13 @@
 				</select>
 			</div>
 			<div class="form-group">
-				<label for="dayOfTheWeek">Semetr</label>
-				<input id="semester" v-model="semester" name="semester" type="text" class="form-input" required>
+				<label for="semester">Semestr</label>
+				<select id="semester" v-model="semester" class="form-input">
+				<option value="NULL" disabled>Wybierz grupę</option>
+				<option v-for="semester in semesters" :key="semester.id" :value="semester.id">
+					{{ semester.name }}
+				</option>
+				</select>
 			</div>
 			<button type="submit" class="submit-button">Zapisz</button>
 		</div>
@@ -86,6 +91,7 @@ export default {
         endTime: '',
         dayOfTheWeek: '',
 		semester: '',
+		semesters: [],
 		occurrence: '',
       };
     },
@@ -103,6 +109,21 @@ export default {
 				this.groups = response.data;
 			} catch (error) {
 				console.error('Błąd podczas pobierania grup:', error);
+			}
+		},
+		async fetchSemesters() {
+			try {
+				const token = sessionStorage.getItem('token');
+				const response = await axios.get('http://localhost:8080/api/semesters', {
+					headers: {
+					'Authorization': `Bearer ${token}`
+					}
+
+				});
+				console.log('Pobrane semstru:', response.data);
+				this.semesters = response.data;
+			} catch (error) {
+				console.error('Błąd podczas pobierania semestrów:', error);
 			}
 		},
 		async submitForm() {
@@ -133,6 +154,7 @@ export default {
     },
 	mounted() {
 		this.fetchGroups();
+		this.fetchSemesters();
 	},
 };
 </script>
