@@ -1,6 +1,16 @@
 <template>
 	<form @submit.prevent="submitForm">
 		<div class="wyrownaj">
+			<div id="header-wrapper">
+				<div class="col-12">
+					<header id="header">
+						<nav id="nav">
+							<router-link to="/addSemester">Dodaj semstr</router-link>
+							<router-link to="/addGroup">Dodaj grupę</router-link>
+						</nav>
+					</header>
+				</div>
+			</div>
 			<h2>Formularz dodawania zajęć</h2>
 			<div class="form-group">
 				<label for="name">Nazwa zajęć</label>
@@ -11,8 +21,13 @@
 				<input id="teacher" v-model="teacher" name="teacher" type="text" class="form-input" required>
 			</div>
 			<div class="form-group">
-				<label for="studentGroup">Grupa</label>
-				<input id="studentGroup" v-model="studentGroup" name="studentGroup" type="text" class="form-input" required>
+				<label for="group">Grupa</label>
+				<select id="group" v-model="group" class="form-input">
+				<option value="NULL" disabled>Wybierz grupę</option>
+				<option v-for="group in groups" :key="group.id" :value="group.id">
+					{{ group.name }}
+				</option>
+				</select>
 			</div>
 			<div class="form-group">
 				<label for="room">Sala</label>
@@ -28,11 +43,33 @@
 			</div>
 			<div class="form-group">
 				<label for="dayOfTheWeek">Dzień tygodnia</label>
-				<input id="dayOfTheWeek" v-model="dayOfTheWeek" name="dayOfTheWeek" type="text" class="form-input" required>
+				<select id="dayOfTheWeek" v-model="dayOfTheWeek" class="form-input" required>
+					<option value="" disabled>Wybierz dzień tygonia</option>
+					<option value="Monday">Poniedzialek</option>
+					<option value="Tuesday">Wtorek</option>
+					<option value="Wednesday">Środa</option>
+					<option value="Thursday">Czwartek</option>
+					<option value="Friday">Piątek</option>
+					<option value="Saturday">Sobota</option>
+					<option value="Sunday">Niedziela</option>
+				</select>
 			</div>
 			<div class="form-group">
-				<label for="dayOfTheWeek">Semetr</label>
-				<input id="semester" v-model="semester" name="semester" type="text" class="form-input" required>
+				<label for="occurrence">Wystepowanie</label>
+				<select id="occurrence" v-model="occurrence" class="form-input" required>
+					<option value="even">Parzyste</option>
+					<option value="odd">Nieparzyste</option>
+					<option value="all">Wszystkie</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="semester">Semestr</label>
+				<select id="semester" v-model="semester" class="form-input">
+				<option value="NULL" disabled>Wybierz grupę</option>
+				<option v-for="semester in semesters" :key="semester.id" :value="semester.id">
+					{{ semester.name }}
+				</option>
+				</select>
 			</div>
 			<button type="submit" class="submit-button">Zapisz</button>
 		</div>
@@ -47,15 +84,48 @@ export default {
       return {
         name: '',
         teacher: '',
-        studentGroup: '',
+        group: '',
+		groups: [],
         room: '',
         startTime: '',
         endTime: '',
         dayOfTheWeek: '',
 		semester: '',
+		semesters: [],
+		occurrence: '',
       };
     },
     methods: {
+		async fetchGroups() {
+			try {
+				const token = sessionStorage.getItem('token');
+				const response = await axios.get('http://localhost:8080/api/groups', {
+					headers: {
+					'Authorization': `Bearer ${token}`
+					}
+
+				}); 
+				console.log('Pobrane grupy:', response.data);
+				this.groups = response.data;
+			} catch (error) {
+				console.error('Błąd podczas pobierania grup:', error);
+			}
+		},
+		async fetchSemesters() {
+			try {
+				const token = sessionStorage.getItem('token');
+				const response = await axios.get('http://localhost:8080/api/semesters', {
+					headers: {
+					'Authorization': `Bearer ${token}`
+					}
+
+				});
+				console.log('Pobrane semstru:', response.data);
+				this.semesters = response.data;
+			} catch (error) {
+				console.error('Błąd podczas pobierania semestrów:', error);
+			}
+		},
 		async submitForm() {
 		const token = sessionStorage.getItem('token');
 		console.log('Token:', token);
@@ -63,24 +133,28 @@ export default {
             const response = await axios.post('http://localhost:8080/api/lessons', {
 			name: this.name,
 			teacher: this.teacher,
-			studentGroup: this.studentGroup,
+			studentGroupId: this.group,
 			room: this.room,
 			startTime: this.startTime,
 			endTime: this.endTime,
 			dayOfTheWeek: this.dayOfTheWeek,
-			semesterId: 1,
+			occurrence: this.occurrence,
+			semesterId: this.semester,
         },{
 			headers: {
 				'Authorization': `Bearer ${token}`,
 			},
         });
-
 			console.log('Dodano :)',response.data);
-			this.$router.push('/');
+			this.$router.push('/schedule');
         } catch (error) {
 			console.log('Error :(', error.response?.data || error.message);
         }
       },
     },
+	mounted() {
+		this.fetchGroups();
+		this.fetchSemesters();
+	},
 };
 </script>
