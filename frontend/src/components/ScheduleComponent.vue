@@ -79,20 +79,8 @@ export default {
     this.fetchSemesters();
   },
   methods: {
-    checkAuthorization() {
-      const token = this.$store.state.token;
-      if (!token) {
-        this.error = 'Brak autoryzacji. Zaloguj się, aby kontynuować.';
-        console.log(this.error);
-        this.$router.push({ path: '/login' });
-        return false;
-      }
-      return token;
-    },
     async fetchSemesters() {
-      const token = this.checkAuthorization();
-      if (!token) return;
-
+      const token = this.$store.state.token;
       try {
         const response = await axios.get('http://localhost:8080/api/semesters', {
           headers: { 'Authorization': `Bearer ${token}` }
@@ -106,9 +94,7 @@ export default {
       }
     },
     async fetchLessons() {
-      const token = this.checkAuthorization();
-      if (!token) return;
-
+      const token = this.$store.state.token;
       try {
         const response = await axios.get('http://localhost:8080/api/lessons', {
           headers: {
