@@ -40,7 +40,9 @@
                 <div class="lesson">
                   <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).startTime }} - </span> 
                   <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).endTime }} </span><br>
-                  <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).name }}</span>
+                  <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).name }}</span><br>
+                  <span class="lesson-id">Sala: {{ getLessonAtTime(day, hour, quarter).room }}</span><br>
+                  <span class="lesson-id">Prowadzący: {{ getLessonAtTime(day, hour, quarter).teacher }}</span>
                 </div>
               </div>
             </div>
@@ -122,7 +124,7 @@ export default {
 
         this.studentGroups = this.getUniqueGroups(this.lessons);
 
-        if (this.lessons.length > 0 && this.i) {
+        if (this.lessons.length > 0 && this.i == 0 ) {
           this.selectedGroup = this.lessons[0].studentGroup.id;
           this.selectedSemester = this.semesters[0].id;
           this.i++;
