@@ -5,7 +5,7 @@
 				<div class="col-12">
 					<header id="header">
 						<nav id="nav">
-							<router-link to="/addSemester">Dodaj semstr</router-link>
+							<router-link to="/addSemester">Dodaj semestr</router-link>
 							<router-link to="/addLesson">Dodaj lekcję</router-link>
 						</nav>
 					</header>

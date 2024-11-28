@@ -9,11 +9,11 @@
 									<h1><router-link to="/schedule" id="logo">timetable</router-link></h1>
 									<nav id="nav">
 										<router-link to="/schedule">Harmonogram</router-link>
-										<router-link to="/showdata">Harmonogram pracowników</router-link>
-										<router-link to="/addLesson">Add Lesson</router-link>
-										<router-link to="/signup">Zarejestruj się</router-link>
-										<router-link to="/login">Zaloguj się</router-link>
-										<router-link to="/logout">Wyloguj się</router-link>
+                    <router-link to="/showdata" v-if="isRole('OFFICE') || isRole('TEACHER')">Harmonogram pracowników</router-link>
+                    <router-link to="/addLesson" v-if="isRole('OFFICE')">Dodawanie</router-link>
+                    <router-link to="/signup" v-if="!isAuthenticated">Zarejestruj się</router-link>
+                    <router-link to="/login" v-if="!isAuthenticated">Zaloguj się</router-link>
+                    <router-link to="/logout" v-if="isAuthenticated">Wyloguj się</router-link>
 									</nav>
 								</header>
 
@@ -24,7 +24,18 @@
   </template>
   
   <script>
-  export default {
-    name: 'HeaderComponent'
-  };
-  </script>
+import { mapGetters } from 'vuex';
+
+export default {
+  name: 'HeaderComponent',
+  computed: {
+        ...mapGetters(['isAuthenticated', 'userRole']),
+    },
+  methods: {
+        isRole(expectedRole) {
+            return this.userRole === expectedRole;
+        },
+  },
+
+};
+</script>
