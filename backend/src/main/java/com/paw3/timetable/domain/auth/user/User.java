@@ -56,9 +56,11 @@ public class User implements UserDetails {
     @JoinColumn(name = "student_group_id")
     private StudentGroup studentGroup;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
     private List<Lesson> lessons;
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role.getName().toString());
@@ -76,21 +78,25 @@ public class User implements UserDetails {
         return email;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;
