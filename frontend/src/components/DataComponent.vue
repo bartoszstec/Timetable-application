@@ -53,7 +53,6 @@
 
 <script>
 import axios from 'axios';
-import { alertStore } from '@/alert.js';
 
 export default {
   name: 'ScheduleComponent',
@@ -79,10 +78,11 @@ export default {
   },
   methods: {
     checkAuthorization() {
-      const token = sessionStorage.getItem('token');
+      const token = this.$store.getters.token;
       if (!token) {
+        this.error = 'Brak autoryzacji. Zaloguj się, aby kontynuować.';
+        console.log(this.error);
         this.$router.push({ path: '/login' });
-        alertStore.addAlert('Zaloguj się, aby uzyskać dostęp do tej strony.', 'info');
         return false;
       }
       return token;
@@ -102,7 +102,6 @@ export default {
         }
       } catch (err) {
         this.error = 'Błąd podczas ładowania semestrów';
-        alertStore.addAlert('Wystąpił błąd podczas ładowania semestrów', 'danger');
       }
     },
     async fetchLessons() {
@@ -130,7 +129,6 @@ export default {
         }
       } catch (err) {
         this.error = 'Błąd podczas ładowania danych';
-        alertStore.addAlert('Wystąpił błąd podczas ładowania danych', 'danger');
       } finally {
         this.loading = false;
       }

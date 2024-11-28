@@ -12,12 +12,11 @@
     },
     methods: {
       logout() {
-        sessionStorage.removeItem('token');
+        this.$store.commit('clearUserData');
   
         // Przekierowanie użytkownika po wylogowaniu
         this.$router.push('/login');
         console.log("Wylogowano pomyślnie");
-        console.log("zawartość token:" + sessionStorage.getItem('token'));
       }
     }
   };

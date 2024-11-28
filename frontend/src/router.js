@@ -4,7 +4,7 @@ import ScheduleComponent from './components/ScheduleComponent.vue';
 import DataComponent from './components/DataComponent.vue';
 import LoginComponent from './components/LoginComponent.vue';
 import LogoutComponent from './components/LogoutComponent.vue';
-import AdderComponent from './components/AdderComponent.vue';
+import LessonAdderComponent from './components/LessonAdderComponent.vue';
 import GroupAdderComponent from './components/GroupAdderComponent.vue';
 import SemesterAdderComponent from './components/SemesterAdderComponent.vue';
 import RegisterComponent from './components/RegisterComponent.vue';
@@ -43,7 +43,7 @@ const routes = [
   {
     path: '/addLesson',
     name: 'addLesson',
-    component: AdderComponent  // Komponent dla strony dodawania lekcji
+    component: LessonAdderComponent  // Komponent dla strony dodawania lekcji
   },
   {
     path: '/addSemester',
