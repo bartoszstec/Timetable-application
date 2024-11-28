@@ -18,7 +18,7 @@
   </div>
 
   <div class="schedule-container">
-    <div class="student-groups">
+    <div class="student-groups">Wybierz grupę zajęciową:<br>-----------------------------------
       <div v-for="group in studentGroups" :key="group.id" class="student-group" :class="{ selected: group.id === selectedGroup }" @click="setSelectedGroup(group.id)">
         {{ group.name }}
         <br>-----------------------------------
@@ -41,8 +41,8 @@
                   <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).startTime }} - </span> 
                   <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).endTime }} </span><br>
                   <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).name }}</span><br>
-                  <span class="lesson-id">Sala: {{ getLessonAtTime(day, hour, quarter).room }}</span><br>
-                  <span class="lesson-id">Prowadzący: {{ getLessonAtTime(day, hour, quarter).teacher }}</span>
+                  <span class="lesson-id">Sala: </span><span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).room }}</span><br>
+                  <span class="lesson-id">Prowadzący: {{ getLessonAtTime(day, hour, quarter).teacher.firstName }}</span> <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).teacher.lastName }}</span>
                 </div>
               </div>
             </div>

@@ -18,9 +18,10 @@
   </div>
 
   <div class="schedule-container">
-    <div class="teachers">
-      <div v-for="teacher in teachers" :key="teacher" class="teacher" :class="{ selected: teacher === selectedTeacher }" @click="setSelectedTeacher(teacher)">
-        {{ teacher }}
+    <div class="teachers">Wybierz pracownika:<br>-----------------------------------
+      <div v-for="teacher in teachers" :key="teacher.id" class="teacher" :class="{ selected: teacher.id === selectedTeacher }" @click="setSelectedTeacher(teacher)">
+        
+        {{ teacher.firstName }} {{ teacher.lastName }}
         <br>-----------------------------------
       </div>
     </div>
@@ -41,8 +42,8 @@
                   <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).startTime }} - </span>
                   <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).endTime }} </span><br>
                   <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).name }}</span><br>
-                  <span class="lesson-id">Sala: {{ getLessonAtTime(day, hour, quarter).room }}</span><br>
-                  <span class="lesson-id">Grupa: {{ getLessonAtTime(day, hour, quarter).studentGroup.name }}</span>
+                  <span class="lesson-id">Sala: </span> <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).room }}</span><br>
+                  <span class="lesson-id">Grupa: </span> <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).studentGroup.name }}</span>
                 </div>
               </div>
             </div>
@@ -87,7 +88,6 @@ export default {
         });
         this.semesters = response.data;
         if (this.semesters.length > 0) {
-          
           this.fetchLessons(); 
         }
       } catch (err) {
@@ -110,8 +110,8 @@ export default {
 
         this.teachers = this.getUniqueTeachers(this.lessons);
 
-        if (this.lessons.length > 0 && this.i==0) {
-          this.selectedTeacher = this.lessons[0].teacher;
+        if (this.lessons.length > 0 && this.i == 0) {
+          this.selectedTeacher = this.lessons[0].teacher.id;
           this.selectedSemester = this.semesters[0].id;
           this.i++;
         }
@@ -123,7 +123,7 @@ export default {
     },
     getUniqueTeachers(lessons) {
       const teachers = lessons.map(lesson => lesson.teacher);
-      return [...new Set(teachers)];
+      return [...new Set(teachers.map(teacher => JSON.stringify(teacher)))].map(teacher => JSON.parse(teacher));
     },
     getLessonAtTime(day, hour, quarter) {
       const daysMapping = {
@@ -136,11 +136,10 @@ export default {
 
       return this.lessons.find(lesson => {
         const lessonDay = daysMapping[lesson.dayOfTheWeek];
-        
         return lessonDay === day &&
           this.isTimeInLesson(hour, quarter, lesson.startTime, lesson.endTime) &&
           lesson.semester.id === this.selectedSemester &&
-          lesson.teacher === this.selectedTeacher &&  
+          lesson.teacher.id === this.selectedTeacher && 
           (lesson.occurrence === 'ALL' || lesson.occurrence === this.selectedOccurrence);
       });
     },
@@ -155,7 +154,7 @@ export default {
       return h * 60 + m + quarter * 15; 
     },
     setSelectedTeacher(teacher) {
-      this.selectedTeacher = teacher;
+      this.selectedTeacher = teacher.id;
     }
   },
 };
@@ -189,7 +188,7 @@ export default {
 .semester-selector select {
   padding: 5px;
   font-size: 16px;
-  width:10%;
+  width: 10%;
 }
 
 .content {
