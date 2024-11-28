@@ -12,6 +12,9 @@
 				</div>
 			</div>
 			<h2>Formularz dodawania zajęć</h2>
+			<div v-if="infoMessage" class="info-message">
+				{{ infoMessage }}
+			</div>
 			<div class="form-group">
 				<label for="name">Nazwa zajęć</label>
 				<input id="name" v-model="name" name="name" type="text" class="form-input" required>
@@ -21,7 +24,7 @@
 				<select id="teacher" v-model="teacher" class="form-input">
 				<option value="NULL" disabled>Wybierz grupę</option>
 				<option v-for="teacher in teachers" :key="teacher.id" :value="teacher.id">
-					{{ teacher.firstName }}+' '+{{ teacher.firstName }}
+					{{ teacher.firstName }} {{ teacher.lastName }}
 				</option>
 				</select>
 			</div>
@@ -102,6 +105,7 @@ export default {
 		teacher: '',
 		teachers: [],
 		occurrence: '',
+		infoMessage: '',
 		errorMessage: '',
       };
     },
@@ -154,31 +158,33 @@ export default {
 			}
 		},
 		async submitForm() {
-		const token = this.$store.state.token;
-		console.log('Token:', token);
-        try {
-            const response = await axios.post('http://localhost:8080/api/lessons', {
-			name: this.name,
-			teacherId: this.teacher,
-			studentGroupId: this.group,
-			room: this.room,
-			startTime: this.startTime,
-			endTime: this.endTime,
-			dayOfTheWeek: this.dayOfTheWeek,
-			occurrence: this.occurrence,
-			semesterId: this.semester,
-        },{
-			headers: {
-				'Authorization': `Bearer ${token}`,
-			},
-        });
-			console.log('Dodano :)',response.data);
-			this.$router.push('/schedule');
-        } catch (error) {
-			console.log('Error :(', error.response?.data || error.message);
-			this.errorMessage = error.response.data.message;
-        }
-      },
+			this.infoMessage = '';
+			this.errorMessage = '';
+			const token = this.$store.state.token;
+			console.log('Token:', token);
+			try {
+				const response = await axios.post('http://localhost:8080/api/lessons', {
+				name: this.name,
+				teacherId: this.teacher,
+				studentGroupId: this.group,
+				room: this.room,
+				startTime: this.startTime,
+				endTime: this.endTime,
+				dayOfTheWeek: this.dayOfTheWeek,
+				occurrence: this.occurrence,
+				semesterId: this.semester,
+			},{
+				headers: {
+					'Authorization': `Bearer ${token}`,
+				},
+			});
+				console.log('Dodano :)',response.data);
+				this.infoMessage = "Pomyślnie dodano lekcję";
+			} catch (error) {
+				console.log('Error :(', error.response?.data || error.message);
+				this.errorMessage = error.response.data.message;
+			}
+		},
     },
 	mounted() {
 		this.fetchGroups();
@@ -191,6 +197,11 @@ export default {
 <style scoped>
 .error-message {
   color: red;
+  margin-top: 10px;
+  font-weight: bold;
+}
+.info-message {
+  color: green;
   margin-top: 10px;
   font-weight: bold;
 }

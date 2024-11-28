@@ -12,6 +12,9 @@
 				</div>
 			</div>
 			<h2>Formularz dodawania semestrów</h2>
+			<div v-if="infoMessage" class="info-message">
+				{{ infoMessage }}
+			</div>
 			<div class="form-group">
 				<label for="startTime">Czas rozpoczęcia zajęć</label>
 				<input id="startTime" v-model="startTime" name="startTime" type="date" class="form-input" required>
@@ -41,32 +44,36 @@ export default {
         name: '',
         startTime: '',
         endTime: '',
+		infoMessage: '',
 		errorMessage: '',
       };
     },
     methods: {
 		async submitForm() {
-		const token = this.$store.state.token;
-		console.log('Token:', token);
-        try {
-            const response = await axios.post('http://localhost:8080/api/semesters', {
-			name: this.name,
-            endDate: this.endTime,
-            startDate: this.startTime,
-        },{
-			headers: {
-				'Authorization': `Bearer ${token}`,
-			},
-        });
-			console.log('Dodano :)',response.data);
-            this.name = '';
-            this.startTime = '';
-            this.endTime = '';
-        } catch (error) {
-			console.log('Error :(', error.response?.data || error.message);
-			this.errorMessage = error.response.data.message;
-        }
-      },
+			this.infoMessage = '';
+			this.errorMessage = '';
+			const token = this.$store.state.token;
+			console.log('Token:', token);
+			try {
+				const response = await axios.post('http://localhost:8080/api/semesters', {
+				name: this.name,
+				endDate: this.endTime,
+				startDate: this.startTime,
+			},{
+				headers: {
+					'Authorization': `Bearer ${token}`,
+				},
+			});
+				console.log('Dodano :)',response.data);
+				this.name = '';
+				this.startTime = '';
+				this.endTime = '';
+				this.infoMessage = "Pomyślnie dodano semestr";
+			} catch (error) {
+				console.log('Error :(', error.response?.data || error.message);
+				this.errorMessage = error.response.data.message;
+			}
+		},
     },
 };
 </script>
@@ -74,6 +81,11 @@ export default {
 <style scoped>
 .error-message {
   color: red;
+  margin-top: 10px;
+  font-weight: bold;
+}
+.info-message {
+  color: green;
   margin-top: 10px;
   font-weight: bold;
 }
