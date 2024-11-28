@@ -3,10 +3,7 @@ package com.paw3.timetable.domain.auth;
 import com.paw3.timetable.domain.auth.role.Role;
 import com.paw3.timetable.domain.auth.role.RoleNotFoundException;
 import com.paw3.timetable.domain.auth.role.RoleRepository;
-import com.paw3.timetable.domain.auth.user.LoginDTO;
-import com.paw3.timetable.domain.auth.user.User;
-import com.paw3.timetable.domain.auth.user.SignupDTO;
-import com.paw3.timetable.domain.auth.user.UserRepository;
+import com.paw3.timetable.domain.auth.user.*;
 import com.paw3.timetable.domain.student_group.StudentGroup;
 import com.paw3.timetable.domain.student_group.StudentGroupNotFoundException;
 import com.paw3.timetable.domain.student_group.StudentGroupRepository;
@@ -40,6 +37,8 @@ public class AuthenticationService {
 
         user.setEmail(signupDTO.getEmail());
         user.setPassword(passwordEncoder.encode(signupDTO.getPassword()));
+        user.setFirstName(signupDTO.getFirstName());
+        user.setLastName(signupDTO.getLastName());
         user.setRole(role);
 
         return userRepository.save(user);
@@ -54,6 +53,6 @@ public class AuthenticationService {
         );
 
         return userRepository.findByEmail(loginDTO.getEmail())
-                .orElseThrow(); //TODO rzucanie błędu gdy nie znajdzie użytkownika
+                .orElseThrow(() -> new UserNotFoundException("User of email " + loginDTO.getEmail() + " not found"));
     }
 }

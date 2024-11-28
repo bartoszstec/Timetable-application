@@ -13,6 +13,12 @@ public class SignupDTO {
     private String password;
 
     @NonNull
+    private String firstName;
+
+    @NonNull
+    private String lastName;
+
+    @NonNull
     private String role;
 
     private Long studentGroupId;

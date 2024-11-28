@@ -2,6 +2,7 @@ package com.paw3.timetable.domain.auth.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.paw3.timetable.domain.auth.role.Role;
+import com.paw3.timetable.domain.lesson.Lesson;
 import com.paw3.timetable.domain.student_group.StudentGroup;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,6 +32,12 @@ public class User implements UserDetails {
     @JsonIgnore
     private String password;
 
+    @Column(nullable = false)
+    private String firstName;
+
+    @Column(nullable = false)
+    private String lastName;
+
     @Column(updatable = false, nullable = false)
     @CreationTimestamp
     @JsonIgnore
@@ -48,6 +55,9 @@ public class User implements UserDetails {
     @ManyToOne()
     @JoinColumn(name = "student_group_id")
     private StudentGroup studentGroup;
+
+    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
+    private List<Lesson> lessons;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

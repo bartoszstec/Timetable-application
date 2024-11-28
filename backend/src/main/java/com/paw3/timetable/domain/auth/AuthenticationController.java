@@ -27,7 +27,7 @@ public class AuthenticationController {
         User authenticatedUser = authenticationService.authenticate(loginDTO);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
-        String role = authenticatedUser.getRole().toString();
+        String role = authenticatedUser.getRole();
 
         return new LoginResponse(
                 jwtToken,
