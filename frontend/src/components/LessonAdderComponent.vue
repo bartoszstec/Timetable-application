@@ -17,8 +17,13 @@
 				<input id="name" v-model="name" name="name" type="text" class="form-input" required>
 			</div>
 			<div class="form-group">
-				<label for="teacher">Prowadzący</label>
-				<input id="teacher" v-model="teacher" name="teacher" type="text" class="form-input" required>
+				<label for="teacher">Nauczyciel</label>
+				<select id="teacher" v-model="teacher" class="form-input">
+				<option value="NULL" disabled>Wybierz grupę</option>
+				<option v-for="teacher in teachers" :key="teacher.id" :value="teacher.id">
+					{{ teacher.firstName }}+' '+{{ teacher.firstName }}
+				</option>
+				</select>
 			</div>
 			<div class="form-group">
 				<label for="group">Grupa</label>
@@ -71,6 +76,9 @@
 				</option>
 				</select>
 			</div>
+			<div v-if="errorMessage" class="error-message">
+				{{ errorMessage }}
+			</div>
 			<button type="submit" class="submit-button">Zapisz</button>
 		</div>
 	</form>
@@ -83,7 +91,6 @@ export default {
 	data() {
       return {
         name: '',
-        teacher: '',
         group: '',
 		groups: [],
         room: '',
@@ -92,13 +99,16 @@ export default {
         dayOfTheWeek: '',
 		semester: '',
 		semesters: [],
+		teacher: '',
+		teachers: [],
 		occurrence: '',
+		errorMessage: '',
       };
     },
     methods: {
 		async fetchGroups() {
 			try {
-				const token = sessionStorage.getItem('token');
+				const token = this.$store.state.token;
 				const response = await axios.get('http://localhost:8080/api/groups', {
 					headers: {
 					'Authorization': `Bearer ${token}`
@@ -109,11 +119,12 @@ export default {
 				this.groups = response.data;
 			} catch (error) {
 				console.error('Błąd podczas pobierania grup:', error);
+				this.errorMessage = error.response.data.message;
 			}
 		},
 		async fetchSemesters() {
 			try {
-				const token = sessionStorage.getItem('token');
+				const token = this.$store.state.token;
 				const response = await axios.get('http://localhost:8080/api/semesters', {
 					headers: {
 					'Authorization': `Bearer ${token}`
@@ -124,15 +135,31 @@ export default {
 				this.semesters = response.data;
 			} catch (error) {
 				console.error('Błąd podczas pobierania semestrów:', error);
+				this.errorMessage = error.response.data.message;
+			}
+		},
+		async fetchTeachers() {
+			try {
+				const token = this.$store.state.token;
+				const response = await axios.get('http://localhost:8080/api/teachers', {
+					headers: {
+					'Authorization': `Bearer ${token}`
+					}
+
+				});
+				this.teachers = response.data;
+			} catch (error) {
+				console.error('Błąd podczas pobierania nauczycieli:', error);
+				this.errorMessage = error.response.data.message;
 			}
 		},
 		async submitForm() {
-		const token = sessionStorage.getItem('token');
+		const token = this.$store.state.token;
 		console.log('Token:', token);
         try {
             const response = await axios.post('http://localhost:8080/api/lessons', {
 			name: this.name,
-			teacher: this.teacher,
+			teacherId: this.teacher,
 			studentGroupId: this.group,
 			room: this.room,
 			startTime: this.startTime,
@@ -149,12 +176,22 @@ export default {
 			this.$router.push('/schedule');
         } catch (error) {
 			console.log('Error :(', error.response?.data || error.message);
+			this.errorMessage = error.response.data.message;
         }
       },
     },
 	mounted() {
 		this.fetchGroups();
 		this.fetchSemesters();
+		this.fetchTeachers();
 	},
 };
 </script>
+
+<style scoped>
+.error-message {
+  color: red;
+  margin-top: 10px;
+  font-weight: bold;
+}
+</style>

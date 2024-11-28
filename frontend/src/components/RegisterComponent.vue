@@ -3,6 +3,14 @@
     <h2>Formularz Rejestracji</h2>
     <form @submit.prevent="performRegistration">
       <div class="form-group">
+      <label for="name">Imię</label>
+      <input id="name" v-model="name" type="name" class="form-input" required>
+      </div>
+      <div class="form-group">
+      <label for="surname">Nazwisko</label>
+      <input id="surname" v-model="surname" type="surname" class="form-input" required>
+      </div>
+      <div class="form-group">
       <label for="email">Email</label>
       <input id="email" v-model="email" type="email" class="form-input" required>
       </div>
@@ -47,6 +55,8 @@ export default {
   name: 'RegisterComponent',
   data() {
     return {
+      name: '',
+      surname: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -59,7 +69,7 @@ export default {
   methods: {
     async fetchGroups() {
       try {
-        const token = sessionStorage.getItem('token');
+        const token = this.$store.state.token;
         const response = await axios.get('http://localhost:8080/api/groups', {
             headers: {
               'Authorization': `Bearer ${token}`
@@ -87,13 +97,15 @@ export default {
           email: this.email,
           password: this.password,
           role: this.role,
+          firstName: this.name,
+          lastName: this.surname,
           studentGroupId: this.group,
         });
 
         console.log('Zarejestrowano pomyślnie:', response.data);
         this.$router.push('/login');
       } catch (error) {
-        this.errorMessage = 'Błąd rejestracji. Spróbuj ponownie.';
+        this.errorMessage = error;
         console.log(this.errorMessage);
       }
     },

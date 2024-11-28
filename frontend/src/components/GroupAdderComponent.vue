@@ -16,6 +16,9 @@
 				<label for="name">Nazwa grupy</label>
 				<input id="name" v-model="name" name="name" type="text" class="form-input" required>
 			</div>
+			<div v-if="errorMessage" class="error-message">
+				{{ errorMessage }}
+			</div>
 			<button type="submit" class="submit-button">Zapisz</button>
 		</div>
 	</form>
@@ -28,26 +31,36 @@ export default {
 	data() {
       return {
         name: '',
+		errorMessage: '',
       };
     },
     methods: {
 		async submitForm() {
-		const token = sessionStorage.getItem('token');
+		const token = this.$store.state.token;
 		console.log('Token:', token);
         try {
             const response = await axios.post('http://localhost:8080/api/groups', {
-			name: this.name,
-        },{
-			headers: {
-				'Authorization': `Bearer ${token}`,
-			},
-        });
+				name: this.name,
+			},{
+				headers: {
+					'Authorization': `Bearer ${token}`,
+				},
+			});
 			console.log('Dodano :)',response.data);
             this.name = '';
         } catch (error) {
 			console.log('Error :(', error.response?.data || error.message);
+			this.errorMessage = error.response.data.message;
         }
       },
     },
 };
 </script>
+
+<style scoped>
+.error-message {
+  color: red;
+  margin-top: 10px;
+  font-weight: bold;
+}
+</style>
