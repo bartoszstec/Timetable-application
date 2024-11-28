@@ -1,5 +1,6 @@
 package com.paw3.timetable.domain.lesson;
 
+import com.paw3.timetable.domain.auth.user.User;
 import com.paw3.timetable.domain.semester.Semester;
 import com.paw3.timetable.domain.student_group.StudentGroup;
 import jakarta.persistence.*;
@@ -21,9 +22,6 @@ public class Lesson {
     private String name;
 
     @Column(nullable = false)
-    private String teacher;
-
-    @Column(nullable = false)
     private String room;
 
     @Column(name = "start_time", nullable = false)
@@ -39,6 +37,10 @@ public class Lesson {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Occurrence occurrence;
+
+    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User teacher;
 
     @JoinColumn(name = "student_group_id", nullable = false)
     @ManyToOne(cascade = CascadeType.ALL)

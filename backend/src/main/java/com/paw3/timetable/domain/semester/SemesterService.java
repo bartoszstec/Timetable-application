@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -41,6 +42,13 @@ public class SemesterService {
     }
 
     public Semester save(SemesterDTO semesterDTO) {
+        LocalDate startDate = semesterDTO.getStartDate();
+        LocalDate endDate = semesterDTO.getEndDate();
+
+        if (startDate.isAfter(endDate)) {
+            throw new SemesterDateConflictException("Start date must be before end date");
+        }
+
         return semesterRepository.save(convertToEntity(semesterDTO));
     }
 

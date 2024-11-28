@@ -40,7 +40,9 @@
                 <div class="lesson">
                   <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).startTime }} - </span>
                   <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).endTime }} </span><br>
-                  <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).name }}</span>
+                  <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).name }}</span><br>
+                  <span class="lesson-id">Sala: {{ getLessonAtTime(day, hour, quarter).room }}</span><br>
+                  <span class="lesson-id">Grupa: {{ getLessonAtTime(day, hour, quarter).studentGroup.name }}</span>
                 </div>
               </div>
             </div>
