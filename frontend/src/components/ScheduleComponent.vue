@@ -80,7 +80,7 @@ export default {
   },
   methods: {
     checkAuthorization() {
-      const token = this.$store.getters.token;
+      const token = this.$store.state.token;
       if (!token) {
         this.error = 'Brak autoryzacji. Zaloguj się, aby kontynuować.';
         console.log(this.error);
