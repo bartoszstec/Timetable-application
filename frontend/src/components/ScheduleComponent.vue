@@ -4,33 +4,44 @@
       <label for="semester">Wybierz semestr:</label><br>
       <select v-model="selectedSemester" @change="fetchLessons">
         <option v-for="semester in semesters" :key="semester.id" :value="semester.id">
-          {{ semester.id }}
+          {{ semester.name }}
         </option>
       </select>
-    </div>
-  <br>
+  </div>
+
+  <div class="semester-selector">
+     <label for="occurrence">Wybierz występowanie:</label><br>
+     <select v-model="selectedOccurrence" @change="fetchLessons">
+       <option value="ODD">Nieparzyste</option>
+       <option value="EVEN">Parzyste</option>
+     </select>
+  </div>
+
   <div class="schedule-container">
     <div class="student-groups">
-      <div v-for="lesson in lessons" :key="lesson.id" class="student-group" :class="{ selected: lesson.studentGroup === selectedGroup }" @click="setSelectedGroup(lesson.studentGroup)">
-        {{ lesson.studentGroup }}
+      <div v-for="group in studentGroups" :key="group.id" class="student-group" :class="{ selected: group.id === selectedGroup }" @click="setSelectedGroup(group.id)">
+        {{ group.name }}
         <br>-----------------------------------
       </div>
     </div>
-  <div class="schedule">
-    <div class="header">
-      <div class="time-column"></div>
-      <div class="day-column" v-for="day in days" :key="day">
-        {{ day }}
+
+    <div class="schedule">
+      <div class="header">
+        <div class="time-column"></div>
+        <div class="day-column" v-for="day in days" :key="day">{{ day }}</div>
       </div>
-    </div>
-    <div class="content">
-      <div class="time-row" v-for="hour in hours" :key="hour">
-        <div class="time-cell">{{ hour }}</div>
-        <div class="day-cell" v-for="day in days" :key="day">
-          <div class="quarter-cell" v-for="quarter in 4" :key="quarter">
-            <div v-if="getLessonAtTime(day, hour, quarter)">
-              <div class="lesson">
-                <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).startTime }} - </span> <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).endTime }} </span> 
+      
+      <div class="content">
+        <div class="time-row" v-for="hour in hours" :key="hour">
+          <div class="time-cell">{{ hour }}</div>
+          <div class="day-cell" v-for="day in days" :key="day">
+            <div class="quarter-cell" v-for="quarter in 4" :key="quarter">
+              <div v-if="getLessonAtTime(day, hour, quarter)">
+                <div class="lesson">
+                  <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).startTime }} - </span> 
+                  <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).endTime }} </span><br>
+                  <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).name }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -38,7 +49,6 @@
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -49,16 +59,19 @@ export default {
   name: 'ScheduleComponent',
   data() {
     return {
-      days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      days: ["Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek"],
       hours: [
         "08:00", "09:00", "10:00", "11:00", "12:00", 
         "13:00", "14:00", "15:00", "16:00", 
         "17:00", "18:00", "19:00", "20:00"
       ],
       lessons: [],
+      studentGroups: [],
       loading: true,
       error: null,
       selectedGroup: null,
+      selectedOccurrence: 'ODD',
+      i:0,
     };
   },
   mounted() {
@@ -66,80 +79,98 @@ export default {
   },
   methods: {
     checkAuthorization() {
-    const token = sessionStorage.getItem('token');
-    if (!token) {
-      this.$router.push({ path: '/login' });
-      alertStore.addAlert('Zaloguj się, aby uzyskać dostęp do tej strony.', 'info');
-      return false;
-    }
-    return token;
-  },
+      const token = sessionStorage.getItem('token');
+      if (!token) {
+        this.$router.push({ path: '/login' });
+        alertStore.addAlert('Zaloguj się, aby uzyskać dostęp do tej strony.', 'info');
+        return false;
+      }
+      return token;
+    },
     async fetchSemesters() {
       const token = this.checkAuthorization();
-      if (!token) return; // Przerwij metodę, jeśli nie ma tokena
-
-    try {
-      const response = await axios.get('http://localhost:8080/api/semesters', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      this.semesters = response.data; // Zapisujemy semestry do danych
-      if (this.semesters.length > 0) {
-        this.selectedSemester = this.semesters[0].id;  // Domyślnie wybieramy pierwszy semestr
-        this.fetchLessons();  // Od razu ładujemy plan zajęć dla pierwszego semestru
-      }
-    } catch (err) {
-      this.error = 'Błąd podczas ładowania semestrów';
-      alertStore.addAlert('Wystąpił błąd podczas ładowania semestrów', 'danger');
-    }
-  },
-    async fetchLessons() {
-      const token = this.checkAuthorization();
-      if (!token) return; // Przerwij metodę, jeśli nie ma tokena
+      if (!token) return;
 
       try {
-        const response = await axios.get('http://localhost:8080/api/lessons',{
-          headers: {
-              'Authorization': `Bearer ${token}`
-            }
-        }); 
-        this.lessons = response.data; 
-        if (this.lessons.length > 0) {
-        this.selectedGroup = this.lessons[0].studentGroup;  
-      }
+        const response = await axios.get('http://localhost:8080/api/semesters', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        this.semesters = response.data;
+        if (this.semesters.length > 0) {
+          this.fetchLessons();
+        }
       } catch (err) {
-        this.error = 'Błąd podczas ładowania danych'; 
-      } finally {
-        this.loading = false; 
-        console.log(this.lessons);
+        this.error = 'Błąd podczas ładowania semestrów';
+        alertStore.addAlert('Wystąpił błąd podczas ładowania semestrów', 'danger');
       }
     },
+    async fetchLessons() {
+      const token = this.checkAuthorization();
+      if (!token) return;
+
+      try {
+        const response = await axios.get('http://localhost:8080/api/lessons', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        this.lessons = response.data;
+
+        if (this.selectedOccurrence && this.selectedOccurrence !== 'ALL') {
+          this.lessons = this.lessons.filter(lesson => lesson.occurrence === this.selectedOccurrence || lesson.occurrence === 'ALL');
+        }
+
+        this.studentGroups = this.getUniqueGroups(this.lessons);
+
+        if (this.lessons.length > 0 && this.i) {
+          this.selectedGroup = this.lessons[0].studentGroup.id;
+          this.selectedSemester = this.semesters[0].id;
+          this.i++;
+        }
+      } catch (err) {
+        this.error = 'Błąd podczas ładowania danych';
+        alertStore.addAlert('Wystąpił błąd podczas ładowania danych', 'danger');
+      } finally {
+        this.loading = false;
+      }
+    },
+    getUniqueGroups(lessons) {
+      const groups = lessons.map(lesson => lesson.studentGroup);
+      return [...new Map(groups.map(group => [group.id, group])).values()];
+    },
     getLessonAtTime(day, hour, quarter) {
-      console.log("BBBBBBBB")
+      const daysMapping = {
+        MONDAY: "Poniedziałek",
+        TUESDAY: "Wtorek",
+        WEDNESDAY: "Środa",
+        THURSDAY: "Czwartek",
+        FRIDAY: "Piątek",
+      };
+
       return this.lessons.find(lesson => {
+        const lessonDay = daysMapping[lesson.dayOfTheWeek];
         
-      console.log(lesson.semester.id)
-        return lesson.dayOfTheWeek === day && 
-        this.isTimeInLesson(hour, quarter, lesson.startTime, lesson.endTime) &&
-        lesson.semester.id === this.selectedSemester&&
-        lesson.studentGroup ===this.selectedGroup; 
-        
+        return lessonDay === day &&
+          this.isTimeInLesson(hour, quarter, lesson.startTime, lesson.endTime) &&
+          lesson.semester.id === this.selectedSemester &&
+          lesson.studentGroup.id === this.selectedGroup &&
+          (lesson.occurrence === 'ALL' || lesson.occurrence === this.selectedOccurrence);
       });
     },
     isTimeInLesson(hour, quarter, startTime, endTime) {
       const timeInMinutes = this.convertTimeToMinutes(hour, quarter);
-      const startInMinutes = this.convertTimeToMinutes(startTime, +1); // Odjęcie 30 minut
-      const endInMinutes = this.convertTimeToMinutes(endTime, -1); // Odjęcie 30 minut
+      const startInMinutes = this.convertTimeToMinutes(startTime, +1);
+      const endInMinutes = this.convertTimeToMinutes(endTime, -1);
       return timeInMinutes >= startInMinutes && timeInMinutes < endInMinutes;
     },
     convertTimeToMinutes(time, quarter = 0) {
       const [h, m] = time.split(':').map(Number);
-      return h * 60 + m + quarter * 15; // Kwartały dodają 15 minut
+      return h * 60 + m + quarter * 15;
     },
-    setSelectedGroup(group) {
-      this.selectedGroup = group;
+    setSelectedGroup(groupId) {
+      this.selectedGroup = groupId;
     }
   },
-
 };
 </script>
 
@@ -212,7 +243,7 @@ export default {
 }
 
 .lesson-id {
-  font-size: 15px; /* Ustawienie bardzo małej czcionki */
+  font-size: 15px;
 }
 .student-groups {
   padding: 10px;
@@ -228,8 +259,7 @@ export default {
   width: 100%;
 }
 .selected {
-  background-color: #077e25; /* Kolor tła dla wybranej grupy */
-  color: white; /* Kolor tekstu */
-  font-weight: bold; /* Pogrubienie tekstu */
+  background-color: #077e25;
+  color: white;
 }
 </style>
