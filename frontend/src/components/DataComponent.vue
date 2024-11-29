@@ -39,10 +39,10 @@
             <div class="quarter-cell" v-for="quarter in 4" :key="quarter">
               <div v-if="getLessonAtTime(day, hour, quarter)">
                 <div class="lesson">
+                  <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).name }} - </span>
                   <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).startTime }} - </span>
                   <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).endTime }} </span><br>
-                  <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).name }}</span><br>
-                  <span class="lesson-id">Sala: </span> <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).room }}</span><br>
+                  <span class="lesson-id">Sala: </span> <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).room }} - </span>
                   <span class="lesson-id">Grupa: </span> <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).studentGroup.name }}</span>
                 </div>
               </div>
@@ -146,7 +146,7 @@ export default {
     isTimeInLesson(hour, quarter, startTime, endTime) {
       const timeInMinutes = this.convertTimeToMinutes(hour, quarter);
       const startInMinutes = this.convertTimeToMinutes(startTime, +1);
-      const endInMinutes = this.convertTimeToMinutes(endTime, -1);
+      const endInMinutes = this.convertTimeToMinutes(endTime, -2);
       return timeInMinutes >= startInMinutes && timeInMinutes < endInMinutes;
     },
     convertTimeToMinutes(time, quarter = 0) {
@@ -230,7 +230,7 @@ export default {
 }
 
 .lesson-id {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .teachers {
