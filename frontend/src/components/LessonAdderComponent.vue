@@ -1,6 +1,6 @@
 <template>
-	<form @submit.prevent="submitForm">
-		<div class="wyrownaj">
+	<div class="wyrownaj">
+		<form @submit.prevent="submitForm">
 			<div id="header-wrapper">
 				<div class="col-12">
 					<header id="header">
@@ -83,8 +83,20 @@
 				{{ errorMessage }}
 			</div>
 			<button type="submit" class="submit-button">Zapisz</button>
+		</form>
+
+		<div class="section">
+			<br><br><br><br><br><br>
+				<h3>Lista zajęć</h3>
+				<ul v-if="lessons.length">
+					<li v-for="lesson in lessons" :key="lesson.id">
+						<strong>{{ lesson.name }}</strong> ({{ lesson.room }} - {{ lesson.startTime }} - {{ lesson.endTime }} - {{ lesson.dayOfTheWeek }})
+						<br><br>
+					</li>
+				</ul>
+				<p v-else>Brak zajęć do wyświetlenia.</p>
 		</div>
-	</form>
+	</div>
 </template>
 
 <script>
@@ -107,6 +119,7 @@ export default {
 		occurrence: '',
 		infoMessage: '',
 		errorMessage: '',
+		lessons: [],
       };
     },
     methods: {
@@ -135,7 +148,7 @@ export default {
 					}
 
 				});
-				console.log('Pobrane semstru:', response.data);
+				console.log('Pobrane semstry:', response.data);
 				this.semesters = response.data;
 			} catch (error) {
 				console.error('Błąd podczas pobierania semestrów:', error);
@@ -157,6 +170,19 @@ export default {
 				this.errorMessage = error.response.data.message;
 			}
 		},
+		async fetchLessons() {
+		const token = this.$store.state.token;
+			try {
+				const response = await axios.get('http://localhost:8080/api/lessons', {
+				headers: { 'Authorization': `Bearer ${token}` }
+				});
+				this.lessons = response.data;
+				console.log(response.data);
+			} catch (err) {
+				this.errorMessage = 'Błąd podczas ładowania zajęć';
+				console.error(err);
+			}
+			},
 		async submitForm() {
 			this.infoMessage = '';
 			this.errorMessage = '';
@@ -190,6 +216,7 @@ export default {
 		this.fetchGroups();
 		this.fetchSemesters();
 		this.fetchTeachers();
+		this.fetchLessons();
 	},
 };
 </script>

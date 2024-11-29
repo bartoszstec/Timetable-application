@@ -69,7 +69,7 @@ const routes = [
   },
 ];
 
-// Tworzymy instancję routera
+//instancja routera
 const router = createRouter({
   history: createWebHistory(),  // Używa trybu history do nawigacji bez hasha #
   routes,

@@ -1,6 +1,7 @@
 <template>
-	<form @submit.prevent="submitForm">
-		<div class="wyrownaj">
+	<div class="wyrownaj">
+		<form @submit.prevent="submitForm">
+		
 			<div id="header-wrapper">
 				<div class="col-12">
 					<header id="header">
@@ -31,8 +32,21 @@
 				{{ errorMessage }}
 			</div>
 			<button type="submit" class="submit-button">Zapisz</button>
+		</form>
+
+		<div class="section">
+			<br><br><br><br><br><br>
+				<h3>Lista semestrów</h3>
+				<ul v-if="semesters.length">
+					<li v-for="semester in semesters" :key="semester.id">
+						<strong>{{ semester.name }}</strong> ({{ semester.startDate }} - {{ semester.endDate }})
+						<button @click="deleteSemester(semester.id)">Usuń</button>
+						<br><br>
+					</li>
+				</ul>
+				<p v-else>Brak semestrów do wyświetlenia.</p>
 		</div>
-	</form>
+	</div>
 </template>
 
 <script>
@@ -46,6 +60,7 @@ export default {
         endTime: '',
 		infoMessage: '',
 		errorMessage: '',
+		semesters: [],
       };
     },
     methods: {
@@ -69,12 +84,42 @@ export default {
 				this.startTime = '';
 				this.endTime = '';
 				this.infoMessage = "Pomyślnie dodano semestr";
+
+				await this.fetchSemesters();
 			} catch (error) {
 				console.log('Error :(', error.response?.data || error.message);
 				this.errorMessage = error.response.data.message;
 			}
 		},
+	async fetchSemesters() {
+		const token = this.$store.state.token;
+			try {
+				const response = await axios.get('http://localhost:8080/api/semesters', {
+				headers: { 'Authorization': `Bearer ${token}` }
+				});
+				this.semesters = response.data;
+			} catch (err) {
+				this.errorMessage = 'Błąd podczas ładowania semestrów';
+				console.error(err);
+			}
+			},
+	async deleteSemester(id) {
+		const token = this.$store.state.token;
+			try {
+				await axios.delete(`http://localhost:8080/api/semesters/${id}`, {
+					headers: { 'Authorization': `Bearer ${token}` }
+				});
+				this.infoMessage = 'Semestr został pomyślnie usunięty.';
+				await this.fetchSemesters(); // Odśwież listę semestrów
+			} catch (err) {
+				this.errorMessage = 'Błąd podczas usuwania semestru.';
+			}
+		},
+		
     },
+	mounted() {
+		this.fetchSemesters();
+	},
 };
 </script>
 

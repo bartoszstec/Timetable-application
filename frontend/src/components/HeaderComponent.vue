@@ -12,6 +12,7 @@
                     <router-link to="/showdata" v-if="isRole('OFFICE') || isRole('TEACHER')">Harmonogram pracowników</router-link>
                     <router-link to="/addLesson" v-if="isRole('OFFICE')">Dodawanie</router-link>
                     <router-link to="/signup" v-if="!isAuthenticated">Zarejestruj się</router-link>
+                    <router-link to="/signup" v-if="isRole('OFFICE')">Rejestracja użytkowników</router-link>
                     <router-link to="/login" v-if="!isAuthenticated">Zaloguj się</router-link>
                     <router-link to="/logout" v-if="isAuthenticated">Wyloguj się</router-link>
 									</nav>
