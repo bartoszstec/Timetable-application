@@ -206,6 +206,7 @@ export default {
 			});
 				console.log('Dodano :)',response.data);
 				this.infoMessage = "Pomyślnie dodano lekcję";
+				await this.fetchLessons();
 			} catch (error) {
 				console.log('Error :(', error.response?.data || error.message);
 				this.errorMessage = error.response.data.message;
