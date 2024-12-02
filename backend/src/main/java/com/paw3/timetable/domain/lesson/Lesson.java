@@ -43,11 +43,11 @@ public class Lesson {
     private User teacher;
 
     @JoinColumn(name = "student_group_id", nullable = false)
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     private StudentGroup studentGroup;
 
     @JoinColumn(name = "semester_id", nullable = false)
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     private Semester semester;
 
     public enum DayOfTheWeek {
