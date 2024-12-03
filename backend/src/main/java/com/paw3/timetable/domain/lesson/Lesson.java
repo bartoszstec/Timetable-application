@@ -39,7 +39,7 @@ public class Lesson {
     private Occurrence occurrence;
 
     @JoinColumn(name = "user_id", nullable = false)
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     private User teacher;
 
     @JoinColumn(name = "student_group_id", nullable = false)
