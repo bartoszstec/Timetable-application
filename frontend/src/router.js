@@ -67,6 +67,11 @@ const routes = [
     name: '403',
     component: ErrorPage403, // Komponent wyświetlający szablon braku autoryzacji
   },
+  {
+    path: '/500',
+    name: '500',
+    component: ErrorPage403, // Komponent wyświetlający szablon błędu serwera
+  },
 ];
 
 //instancja routera
