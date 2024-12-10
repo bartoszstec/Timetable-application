@@ -90,7 +90,8 @@
 				<h3>Lista zajęć</h3>
 				<ul v-if="lessons.length">
 					<li v-for="lesson in lessons" :key="lesson.id">
-						<strong>{{ lesson.name }}</strong> ({{ lesson.room }} - {{ lesson.startTime }} - {{ lesson.endTime }} - {{ lesson.dayOfTheWeek }})
+						<strong>{{ lesson.name }}</strong> pokój: {{ lesson.room }} - ({{ lesson.startTime }} - {{ lesson.endTime }} - {{ lesson.dayOfTheWeek }} - {{ lesson.semester.name }} - {{ lesson.occurrence }})
+						<button @click="deleteLesson(lesson.id)">Usuń</button>
 						<br><br>
 					</li>
 				</ul>
@@ -210,6 +211,18 @@ export default {
 			} catch (error) {
 				console.log('Error :(', error.response?.data || error.message);
 				this.errorMessage = error.response.data.message;
+			}
+		},
+		async deleteLesson(id) {
+		const token = this.$store.state.token;
+			try {
+				await axios.delete(`http://localhost:8080/api/lessons/${id}`, {
+					headers: { 'Authorization': `Bearer ${token}` }
+				});
+				this.infoMessage = 'Zajęcia zostały pomyślnie usunięte.';
+				await this.fetchLessons(); // Odśwież listę zajęć
+			} catch (err) {
+				this.errorMessage = 'Błąd podczas usuwania zajęć.';
 			}
 		},
     },
