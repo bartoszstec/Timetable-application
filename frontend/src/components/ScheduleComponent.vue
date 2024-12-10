@@ -18,7 +18,7 @@
   </div>
 
   <div class="schedule-container">
-    <div class="student-groups">
+    <div class="student-groups">Wybierz grupę zajęciową:<br>-----------------------------------
       <div v-for="group in studentGroups" :key="group.id" class="student-group" :class="{ selected: group.id === selectedGroup }" @click="setSelectedGroup(group.id)">
         {{ group.name }}
         <br>-----------------------------------
@@ -38,11 +38,11 @@
             <div class="quarter-cell" v-for="quarter in 4" :key="quarter">
               <div v-if="getLessonAtTime(day, hour, quarter)">
                 <div class="lesson">
+                  <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).name }} -</span>
                   <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).startTime }} - </span> 
-                  <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).endTime }} </span><br>
-                  <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).name }}</span><br>
-                  <span class="lesson-id">Sala: {{ getLessonAtTime(day, hour, quarter).room }}</span><br>
-                  <span class="lesson-id">Prowadzący: {{ getLessonAtTime(day, hour, quarter).teacher }}</span>
+                  <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).endTime }} </span><br> 
+                  <span class="lesson-id">Sala: </span><span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).room }} - </span> 
+                  <span class="lesson-id">  Prowadzący: {{ getLessonAtTime(day, hour, quarter).teacher.firstName }}</span> <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).teacher.lastName }}</span>
                 </div>
               </div>
             </div>
@@ -55,7 +55,6 @@
 
 <script>
 import axios from 'axios';
-import { alertStore } from '@/alert.js';
 
 export default {
   name: 'ScheduleComponent',
@@ -80,19 +79,8 @@ export default {
     this.fetchSemesters();
   },
   methods: {
-    checkAuthorization() {
-      const token = sessionStorage.getItem('token');
-      if (!token) {
-        this.$router.push({ path: '/login' });
-        alertStore.addAlert('Zaloguj się, aby uzyskać dostęp do tej strony.', 'info');
-        return false;
-      }
-      return token;
-    },
     async fetchSemesters() {
-      const token = this.checkAuthorization();
-      if (!token) return;
-
+      const token = this.$store.state.token;
       try {
         const response = await axios.get('http://localhost:8080/api/semesters', {
           headers: { 'Authorization': `Bearer ${token}` }
@@ -103,13 +91,10 @@ export default {
         }
       } catch (err) {
         this.error = 'Błąd podczas ładowania semestrów';
-        alertStore.addAlert('Wystąpił błąd podczas ładowania semestrów', 'danger');
       }
     },
     async fetchLessons() {
-      const token = this.checkAuthorization();
-      if (!token) return;
-
+      const token = this.$store.state.token;
       try {
         const response = await axios.get('http://localhost:8080/api/lessons', {
           headers: {
@@ -131,7 +116,6 @@ export default {
         }
       } catch (err) {
         this.error = 'Błąd podczas ładowania danych';
-        alertStore.addAlert('Wystąpił błąd podczas ładowania danych', 'danger');
       } finally {
         this.loading = false;
       }
@@ -162,7 +146,7 @@ export default {
     isTimeInLesson(hour, quarter, startTime, endTime) {
       const timeInMinutes = this.convertTimeToMinutes(hour, quarter);
       const startInMinutes = this.convertTimeToMinutes(startTime, +1);
-      const endInMinutes = this.convertTimeToMinutes(endTime, -1);
+      const endInMinutes = this.convertTimeToMinutes(endTime, -2);
       return timeInMinutes >= startInMinutes && timeInMinutes < endInMinutes;
     },
     convertTimeToMinutes(time, quarter = 0) {
@@ -245,7 +229,7 @@ export default {
 }
 
 .lesson-id {
-  font-size: 15px;
+  font-size: 14px;
 }
 .student-groups {
   padding: 10px;

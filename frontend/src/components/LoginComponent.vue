@@ -17,14 +17,14 @@
 
 <script>
 import axios from 'axios';
+import store from '@/store';
 
 export default {
     name: 'LoginComponent',
 data() {
     return {
         login: '',
-        password: '',
-        loginError: false,
+        password: ''
     };
 },
 methods: {
@@ -37,7 +37,10 @@ methods: {
             });
 
             const token = response.data.token;
-            sessionStorage.setItem('token', token);
+            const role = response.data.role;
+
+            store.commit('setToken', token);
+            store.commit('setRole', role);
 
             console.log('Zalogowano pomyślnie');
             console.log(token);

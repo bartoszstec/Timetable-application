@@ -14,4 +14,7 @@ public class LoginResponse {
 
     @NonNull
     private Long expiresIn;
+
+    @NonNull
+    private String role;
 }

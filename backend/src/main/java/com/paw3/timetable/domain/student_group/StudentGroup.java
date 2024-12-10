@@ -20,14 +20,14 @@ public class StudentGroup {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NonNull
+    @Column(unique = true, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "studentGroup", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "studentGroup", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<User> students;
 
-    @OneToMany(mappedBy = "studentGroup", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "studentGroup", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Lesson> lessons;
 }

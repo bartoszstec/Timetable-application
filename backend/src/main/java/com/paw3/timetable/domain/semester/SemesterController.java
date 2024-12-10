@@ -3,6 +3,7 @@ package com.paw3.timetable.domain.semester;
 import com.paw3.timetable.domain.lesson.Lesson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,11 +36,13 @@ public class SemesterController {
     }
 
     @PostMapping("/semesters")
+    @PreAuthorize("hasRole('OFFICE')")
     Semester newSemester(@RequestBody SemesterDTO semesterDTO) {
         return semesterService.save(semesterDTO);
     }
 
     @DeleteMapping("/semesters/{id}")
+    @PreAuthorize("hasRole('OFFICE')")
     ResponseEntity<String> deleteSemester(@PathVariable Long id) {
         return semesterService.deleteById(id);
     }

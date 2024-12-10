@@ -18,9 +18,10 @@
   </div>
 
   <div class="schedule-container">
-    <div class="teachers">
-      <div v-for="teacher in teachers" :key="teacher" class="teacher" :class="{ selected: teacher === selectedTeacher }" @click="setSelectedTeacher(teacher)">
-        {{ teacher }}
+    <div class="teachers">Wybierz pracownika:<br>-----------------------------------
+      <div v-for="teacher in teachers" :key="teacher.id" class="teacher" :class="{ selected: teacher.id === selectedTeacher }" @click="setSelectedTeacher(teacher)">
+        
+        {{ teacher.firstName }} {{ teacher.lastName }}
         <br>-----------------------------------
       </div>
     </div>
@@ -38,11 +39,11 @@
             <div class="quarter-cell" v-for="quarter in 4" :key="quarter">
               <div v-if="getLessonAtTime(day, hour, quarter)">
                 <div class="lesson">
+                  <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).name }} - </span>
                   <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).startTime }} - </span>
                   <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).endTime }} </span><br>
-                  <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).name }}</span><br>
-                  <span class="lesson-id">Sala: {{ getLessonAtTime(day, hour, quarter).room }}</span><br>
-                  <span class="lesson-id">Grupa: {{ getLessonAtTime(day, hour, quarter).studentGroup.name }}</span>
+                  <span class="lesson-id">Sala: </span> <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).room }} - </span>
+                  <span class="lesson-id">Grupa: </span> <span class="lesson-id">{{ getLessonAtTime(day, hour, quarter).studentGroup.name }}</span>
                 </div>
               </div>
             </div>
@@ -55,7 +56,6 @@
 
 <script>
 import axios from 'axios';
-import { alertStore } from '@/alert.js';
 
 export default {
   name: 'ScheduleComponent',
@@ -80,37 +80,22 @@ export default {
     this.fetchSemesters();
   },
   methods: {
-    checkAuthorization() {
-      const token = sessionStorage.getItem('token');
-      if (!token) {
-        this.$router.push({ path: '/login' });
-        alertStore.addAlert('Zaloguj się, aby uzyskać dostęp do tej strony.', 'info');
-        return false;
-      }
-      return token;
-    },
     async fetchSemesters() {
-      const token = this.checkAuthorization();
-      if (!token) return;
-
+      const token = this.$store.state.token;
       try {
         const response = await axios.get('http://localhost:8080/api/semesters', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         this.semesters = response.data;
         if (this.semesters.length > 0) {
-          
           this.fetchLessons(); 
         }
       } catch (err) {
         this.error = 'Błąd podczas ładowania semestrów';
-        alertStore.addAlert('Wystąpił błąd podczas ładowania semestrów', 'danger');
       }
     },
     async fetchLessons() {
-      const token = this.checkAuthorization();
-      if (!token) return;
-
+      const token = this.$store.state.token;
       try {
         const response = await axios.get('http://localhost:8080/api/lessons', {
           headers: {
@@ -125,21 +110,20 @@ export default {
 
         this.teachers = this.getUniqueTeachers(this.lessons);
 
-        if (this.lessons.length > 0 && this.i==0) {
-          this.selectedTeacher = this.lessons[0].teacher;
+        if (this.lessons.length > 0 && this.i == 0) {
+          this.selectedTeacher = this.lessons[0].teacher.id;
           this.selectedSemester = this.semesters[0].id;
           this.i++;
         }
       } catch (err) {
         this.error = 'Błąd podczas ładowania danych';
-        alertStore.addAlert('Wystąpił błąd podczas ładowania danych', 'danger');
       } finally {
         this.loading = false;
       }
     },
     getUniqueTeachers(lessons) {
       const teachers = lessons.map(lesson => lesson.teacher);
-      return [...new Set(teachers)];
+      return [...new Set(teachers.map(teacher => JSON.stringify(teacher)))].map(teacher => JSON.parse(teacher));
     },
     getLessonAtTime(day, hour, quarter) {
       const daysMapping = {
@@ -152,18 +136,17 @@ export default {
 
       return this.lessons.find(lesson => {
         const lessonDay = daysMapping[lesson.dayOfTheWeek];
-        
         return lessonDay === day &&
           this.isTimeInLesson(hour, quarter, lesson.startTime, lesson.endTime) &&
           lesson.semester.id === this.selectedSemester &&
-          lesson.teacher === this.selectedTeacher &&  
+          lesson.teacher.id === this.selectedTeacher && 
           (lesson.occurrence === 'ALL' || lesson.occurrence === this.selectedOccurrence);
       });
     },
     isTimeInLesson(hour, quarter, startTime, endTime) {
       const timeInMinutes = this.convertTimeToMinutes(hour, quarter);
       const startInMinutes = this.convertTimeToMinutes(startTime, +1);
-      const endInMinutes = this.convertTimeToMinutes(endTime, -1);
+      const endInMinutes = this.convertTimeToMinutes(endTime, -2);
       return timeInMinutes >= startInMinutes && timeInMinutes < endInMinutes;
     },
     convertTimeToMinutes(time, quarter = 0) {
@@ -171,7 +154,7 @@ export default {
       return h * 60 + m + quarter * 15; 
     },
     setSelectedTeacher(teacher) {
-      this.selectedTeacher = teacher;
+      this.selectedTeacher = teacher.id;
     }
   },
 };
@@ -205,7 +188,7 @@ export default {
 .semester-selector select {
   padding: 5px;
   font-size: 16px;
-  width:10%;
+  width: 10%;
 }
 
 .content {
@@ -247,7 +230,7 @@ export default {
 }
 
 .lesson-id {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .teachers {

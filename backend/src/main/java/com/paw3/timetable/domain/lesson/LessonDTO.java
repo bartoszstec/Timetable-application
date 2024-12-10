@@ -13,7 +13,7 @@ public class LessonDTO {
     private String name;
 
     @NonNull
-    private String teacher;
+    private Long teacherId;
 
     @NonNull
     private Long studentGroupId;

@@ -1,5 +1,8 @@
 package com.paw3.timetable.domain.lesson;
 
+import com.paw3.timetable.domain.auth.user.User;
+import com.paw3.timetable.domain.auth.user.UserNotFoundException;
+import com.paw3.timetable.domain.auth.user.UserRepository;
 import com.paw3.timetable.domain.semester.Semester;
 import com.paw3.timetable.domain.semester.SemesterNotFoundException;
 import com.paw3.timetable.domain.semester.SemesterRepository;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +25,7 @@ public class LessonService {
     private final LessonRepository lessonRepository;
     private final SemesterRepository semesterRepository;
     private final StudentGroupRepository studentGroupRepository;
+    private final UserRepository userRepository;
 
     public List<Lesson> findAll() {
         return lessonRepository.findAll();
@@ -38,6 +43,13 @@ public class LessonService {
         StudentGroup studentGroup = studentGroupRepository.findById(lessonDTO.getStudentGroupId())
                 .orElseThrow(() -> new StudentGroupNotFoundException("Student group of id " + lessonDTO.getStudentGroupId() + " not found"));
 
+        User teacher = userRepository.findById(lessonDTO.getTeacherId())
+                .orElseThrow(() -> new UserNotFoundException("Teacher of id " + lessonDTO.getTeacherId() + " not found"));
+
+        if (!Objects.equals(teacher.getRole(), "TEACHER")) {
+            throw new InvalidTeacherRoleException("User of id " + teacher.getId() + " is not a teacher");
+        }
+
         List<Lesson> lessons = lessonRepository.findBySemesterAndDayOfTheWeekAndStudentGroup(
                 semester,
                 Lesson.DayOfTheWeek.valueOf(lessonDTO.getDayOfTheWeek().toUpperCase()),
@@ -47,6 +59,10 @@ public class LessonService {
         LocalTime startTime = lessonDTO.getStartTime();
         LocalTime endTime = lessonDTO.getEndTime();
         String occurrence = lessonDTO.getOccurrence().toLowerCase();
+
+        if (endTime.isBefore(startTime)) {
+            throw new LessonTimeConflictException("Start time must be before end time");
+        }
 
         for (Lesson lesson: lessons) {
             if (timeRangesOverlap(startTime, endTime, lesson.getStartTime(), lesson.getEndTime())) {
@@ -61,7 +77,7 @@ public class LessonService {
             }
         }
 
-        return lessonRepository.save(convertToEntity(lessonDTO, semester, studentGroup));
+        return lessonRepository.save(convertToEntity(lessonDTO, semester, studentGroup, teacher));
     }
 
     private boolean timeRangesOverlap(LocalTime start1, LocalTime end1, LocalTime start2, LocalTime end2) {
@@ -75,11 +91,11 @@ public class LessonService {
         return new ResponseEntity<>("Lesson of id " + id + " has been deleted", HttpStatus.OK);
     }
 
-    private Lesson convertToEntity(LessonDTO lessonDTO, Semester semester, StudentGroup studentGroup) {
+    private Lesson convertToEntity(LessonDTO lessonDTO, Semester semester, StudentGroup studentGroup, User teacher) {
         Lesson lesson = new Lesson();
 
         lesson.setName(lessonDTO.getName());
-        lesson.setTeacher(lessonDTO.getTeacher());
+        lesson.setTeacher(teacher);
         lesson.setRoom(lessonDTO.getRoom());
         lesson.setStartTime(lessonDTO.getStartTime());
         lesson.setEndTime(lessonDTO.getEndTime());

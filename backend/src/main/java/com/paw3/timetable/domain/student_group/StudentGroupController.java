@@ -1,6 +1,7 @@
 package com.paw3.timetable.domain.student_group;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class StudentGroupController {
     }
 
     @PostMapping("/groups")
+    @PreAuthorize("hasRole('OFFICE')")
     StudentGroup newStudentGroup(@RequestBody StudentGroupDTO studentGroupDTO) {
         return studentGroupService.save(studentGroupDTO);
     }
